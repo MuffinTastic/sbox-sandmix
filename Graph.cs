@@ -36,13 +36,14 @@ public class Graph
 
 	public void Connect( string from, string to )
 	{
-		Connections.Add( (from, to) );
-		Log.Info( Connections.Count() );
+		if ( !Connections.Contains( (from, to) ) )
+			Connections.Add( (from, to) );
 	}
 
 	public void Disconnect( string from, string to )
 	{
-		Connections.Remove( (from, to) );
+		if ( Connections.Contains( (from, to) ) )
+			Connections.Remove( (from, to) );
 	}
 
 	public List<(string, string)> FindFrom( string from )
