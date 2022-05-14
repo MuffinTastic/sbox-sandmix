@@ -54,9 +54,16 @@ public class Graph
 		return Connections.Where( ( c ) => c.Item2 == to ).ToList();
 	}
 
-	public static Graph Deserialize()
+	public static Graph Deserialize( string json )
 	{
-		throw new NotImplementedException();
+		JsonSerializerOptions options = new()
+		{
+			IncludeFields = true,
+			WriteIndented = true
+		};
+		options.Converters.Add( new BaseNodeConverter() );
+
+		return JsonSerializer.Deserialize( json, typeof( Graph ), options ) as Graph;
 	}
 
 	public string Serialize()

@@ -38,14 +38,22 @@ public class BaseNodeConverter : JsonConverter<BaseNode>
 
 		string nodeTypeName = reader.GetString();
 
-		//var nodeType = AvailableNodes.Where( n => n.Name == nodeTypeName ).FirstOrDefault();
 		var nodeType = Library.GetType( nodeTypeName );
 		if ( nodeType is null )
 		{
-			throw new NotSupportedException();
+			throw new NotSupportedException( nodeTypeName );
 		}
 
-		node = (BaseNode)JsonSerializer.Deserialize( ref reader, nodeType );
+		if ( !reader.Read() || reader.GetString() != "NodeData" )
+		{
+			throw new JsonException();
+		}
+		if ( !reader.Read() || reader.TokenType != JsonTokenType.StartObject )
+		{
+			throw new JsonException();
+		}
+
+		node = (BaseNode) JsonSerializer.Deserialize( ref reader, nodeType );
 
 		if ( !reader.Read() || reader.TokenType != JsonTokenType.EndObject )
 		{
@@ -63,6 +71,8 @@ public class BaseNodeConverter : JsonConverter<BaseNode>
 		writer.WriteStartObject();
 
 		writer.WriteString( "NodeType", value.GetType().Name );
+
+		writer.WritePropertyName( "NodeData" );
 		JsonSerializer.Serialize( writer, value, value.GetType() );
 
 		writer.WriteEndObject();
