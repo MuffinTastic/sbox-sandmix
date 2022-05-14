@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SandMix.Nodes.Operations;
+namespace SandMix.Nodes.Maths;
 
-[Library, Display( Name = "Sub Float", Description = "Subtract one float from another", GroupName = "Operations" )]
+[Library, Icon( "remove" ), Display( Name = "Sub Float", Description = "Subtract one float from another", GroupName = "Maths" )]
 public class FloatSubNode : BaseNode
 {
 	[Input]

@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SandMix.Nodes.Operations;
+namespace SandMix.Nodes.Maths;
 
-[Library, Display( Name = "Add Float", Description = "Add two floats together", GroupName = "Operations" )]
+[Library, Icon( "add" ), Display( Name = "Add Float", Description = "Add two floats together", GroupName = "Maths" )]
 public class FloatAddNode : BaseNode
 {
 	[Input]

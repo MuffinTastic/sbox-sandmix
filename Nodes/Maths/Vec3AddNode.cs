@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SandMix.Nodes.Operations;
+namespace SandMix.Nodes.Maths;
 
-[Library, Display( Name = "Add Vector3", Description = "Add two Vector3s together", GroupName = "Operations" )]
+[Library, Icon( "add" ), Display( Name = "Add Vector3", Description = "Add two Vector3s together", GroupName = "Maths" )]
 public class Vec3AddNode : BaseNode
 {
 	[Input]
