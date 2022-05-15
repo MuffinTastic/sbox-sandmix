@@ -6,6 +6,6 @@ namespace SandMix.Nodes.Inputs;
 [Library, Display( Name = "Constant Float", Description = "Constant float input", GroupName = "Inputs" )]
 public class FloatConstantNode : BaseNode
 {
-	[Constant, Output]
+	[Output]
 	public float Value { get; set; } = 0;
 }

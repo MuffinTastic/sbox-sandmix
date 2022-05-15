@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Sandbox;
 
 #if TOOLS
@@ -22,6 +23,6 @@ public class TrackNode : BaseNode
 		{ get; set; }
 #endif
 
-	[Browsable( false ), Output]
+	[Browsable( false ), Output, JsonIgnore]
 	public Types.Audio Output { get; set; }
 }
