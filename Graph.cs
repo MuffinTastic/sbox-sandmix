@@ -20,14 +20,25 @@ public class Graph
 		Nodes = new List<BaseNode>();
 	}
 
+	public bool Any()
+	{
+		return Nodes.Any() || Connections.Any();
+	}
+
 	public void Add( BaseNode node )
 	{
+		if ( Nodes.Contains( node ) )
+			return;
+
 		node.Graph = this;
 		Nodes.Add( node );
 	}
 
 	public void Remove( BaseNode node )
 	{
+		if ( Nodes.Contains( node ) )
+			return;
+
 		Nodes.Remove( node );
 	}
 
@@ -38,14 +49,18 @@ public class Graph
 
 	public void Connect( string from, string to )
 	{
-		if ( !Connections.Contains( (from, to) ) )
-			Connections.Add( (from, to) );
+		if ( Connections.Contains( (from, to) ) )
+			return;
+
+		Connections.Add( (from, to) );
 	}
 
 	public void Disconnect( string from, string to )
 	{
 		if ( Connections.Contains( (from, to) ) )
-			Connections.Remove( (from, to) );
+			return;
+
+		Connections.Remove( (from, to) );
 	}
 
 	public List<(string, string)> FindFrom( string from )
