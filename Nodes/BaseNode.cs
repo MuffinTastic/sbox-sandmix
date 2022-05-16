@@ -18,9 +18,14 @@ public abstract class BaseNode
 	public string Name { get; set; }
 	public string Comment { get; set; }
 
+	public static string GetNewIdentifier()
+	{
+		return Guid.NewGuid().ToString();
+	}
+
 	public BaseNode()
 	{
-		Identifier = Guid.NewGuid().ToString();
+		Identifier = GetNewIdentifier();
 	}
 
 	public bool IsNamed( string name )

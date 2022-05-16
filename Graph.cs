@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SandMix;
 using SandMix.Nodes;
@@ -10,8 +11,9 @@ using SandMix.Nodes;
 public class Graph
 {
 	[Browsable( true )]
-	public List<BaseNode> Nodes { get; init; } = new();
-	public List<(string, string)> Connections { get; init; } = new();
+	public List<BaseNode> Nodes { get; set; } = new();
+	public List<(string, string)> Connections { get; set; } = new();
+
 
 	public Graph()
 	{
@@ -77,5 +79,30 @@ public class Graph
 		options.Converters.Add( new BaseNodeConverter() );
 
 		return JsonSerializer.Serialize( this, typeof( Graph ), options );
+	}
+
+	public void RegenerateIdentifiers()
+	{
+		foreach ( var node in Nodes )
+		{
+			var oldIdent = node.Identifier;
+			node.Identifier = BaseNode.GetNewIdentifier();
+
+			for ( var i = 0; i < Connections.Count; i++ )
+			{
+				var split1 = Connections[i].Item1.Split( '.', 2 );
+				var split2 = Connections[i].Item2.Split( '.', 2 );
+
+				string newOut = Connections[i].Item1;
+				string newIn = Connections[i].Item2;
+
+				if ( split1[0] == oldIdent )
+					newOut = $"{node.Identifier}.{split1[1]}";
+				if ( split2[0] == oldIdent )
+					newIn = $"{node.Identifier}.{split2[1]}";
+
+				Connections[i] = (newOut, newIn);
+			}
+		}
 	}
 }
