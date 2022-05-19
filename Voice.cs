@@ -2,7 +2,7 @@
 
 namespace SandMix;
 
-public partial class Voice : Entity
+public partial class Voice
 {
 
 }
