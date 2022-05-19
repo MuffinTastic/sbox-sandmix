@@ -13,7 +13,7 @@ public abstract class BaseNode
 	public Vector2 Position { get; set; }
 
 	[Browsable( false ), JsonIgnore]
-	public Graph Graph { get; set; }
+	public GraphContainer Graph { get; set; }
 
 	public string Name { get; set; }
 	public string Comment { get; set; }
