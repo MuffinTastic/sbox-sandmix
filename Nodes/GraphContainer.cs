@@ -5,14 +5,14 @@ using System.Text.Json;
 
 namespace SandMix.Nodes;
 
-public class Graph
+public class GraphContainer
 {
 	[Browsable( true )]
 	public List<BaseNode> Nodes { get; set; } = new();
 	public List<(string, string)> Connections { get; set; } = new();
 
 
-	public Graph()
+	public GraphContainer()
 	{
 		Nodes = new List<BaseNode>();
 	}
@@ -69,7 +69,7 @@ public class Graph
 		return Connections.Where( ( c ) => c.Item2 == to ).ToList();
 	}
 
-	public static Graph Deserialize( string json )
+	public static GraphContainer Deserialize( string json )
 	{
 		JsonSerializerOptions options = new()
 		{
@@ -78,7 +78,7 @@ public class Graph
 		};
 		options.Converters.Add( new BaseNodeConverter() );
 
-		return JsonSerializer.Deserialize( json, typeof( Graph ), options ) as Graph;
+		return JsonSerializer.Deserialize( json, typeof( GraphContainer ), options ) as GraphContainer;
 	}
 
 	public string Serialize()
@@ -90,7 +90,7 @@ public class Graph
 		};
 		options.Converters.Add( new BaseNodeConverter() );
 
-		return JsonSerializer.Serialize( this, typeof( Graph ), options );
+		return JsonSerializer.Serialize( this, typeof( GraphContainer ), options );
 	}
 
 	public void RegenerateIdentifiers()
