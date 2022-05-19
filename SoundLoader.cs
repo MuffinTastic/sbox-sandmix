@@ -11,26 +11,27 @@ namespace SandMix;
 /// </summary>
 public static partial class SoundLoader
 {
+	private static bool Debug { get; set; } = false;
+
 	private const string VSND_EXT = ".vsnd";
 	private const string VSND_C_EXT = ".vsnd_c";
 	private const string WAV_EXT = ".wav";
-	private const string MP3_EXT = ".mp3";
 
 	private static Dictionary<string, SoundData> LoadedSoundData = new();
 
 	[Event.Hotload]
-	public static void aaaa()
+	public static void OnHotload()
 	{
 		LoadedSoundData.Clear();
 	}
 
 	/// <summary>
-	/// Get samples from a file.
+	/// Get samples from a sound file.
 	/// </summary>
-	/// <param name="file">Name of a sound file</param>
+	/// <param name="file">Path to a sound file</param>
 	public static SoundData LoadSamples( string file )
 	{
-		SoundData soundData;
+		SoundData soundData = null;
 
 		var soundName = Path.GetFileNameWithoutExtension( file ).ToLower();
 
@@ -49,47 +50,50 @@ public static partial class SoundLoader
 				if ( FileSystem.Mounted.FileExists( vsndFile ) )
 				{
 					stream = FileSystem.Mounted.OpenRead( vsndFile );
-					LoadFromVsnd( stream, out soundData );
+					soundData = LoadFromVsnd( stream );
 					break;
 				}
 
 				vsndFile = Path.ChangeExtension( file, WAV_EXT );
 				if ( FileSystem.Mounted.FileExists( vsndFile ) )
 				{
-					//LoadFromWav( stream, out soundData );
-
+					stream = FileSystem.Mounted.OpenRead( vsndFile );
+					soundData = LoadFromWav( stream );
 					break;
 				}
 
-				vsndFile = Path.ChangeExtension( file, MP3_EXT );
-				if ( FileSystem.Mounted.FileExists( vsndFile ) )
-				{
-					//LoadFromMp3( stream, out soundData );
-				}
-
-
-				break;
+				throw new FileNotFoundException( $"No supported sound file format was found for {file}" );
 
 			case VSND_C_EXT: // let's trust the user, try to load data based off the extension they give us
 				stream = FileSystem.Mounted.OpenRead( file );
-				LoadFromVsnd( stream, out soundData );
+				soundData = LoadFromVsnd( stream );
 				break;
 
 			case WAV_EXT:
 				stream = FileSystem.Mounted.OpenRead( file );
-
-				break;
-
-			case MP3_EXT:
-				stream = FileSystem.Mounted.OpenRead( file );
-
+				soundData = LoadFromWav( stream );
 				break;
 
 			default:
-				
-				break;
+				throw new NotSupportedException( $"Extension '{ext}' is not supported" );
 		}
 
+		if ( soundData is null )
+			throw new InvalidSoundDataException( "No sound data was loaded" );
+
+		if ( SoundLoader.Debug )
+		{
+			Log.Info( $"Size: {soundData.Size}" );
+			Log.Info( $"SampleSize: {soundData.SampleSize}" );
+			Log.Info( $"SampleRate: {soundData.SampleRate}" );
+			Log.Info( $"SampleCount: {soundData.SampleCount}" );
+			Log.Info( $"BitsPerSample: {soundData.BitsPerSample}" );
+			Log.Info( $"Channels: {soundData.Channels}" );
+			Log.Info( $"LoopStart: {soundData.LoopStart}" );
+			Log.Info( $"LoopEnd: {soundData.LoopEnd}" );
+		}
+
+		soundData.File = file;
 		LoadedSoundData.Add( soundName, soundData );
 		return soundData;
 	}
@@ -100,20 +104,4 @@ public static partial class SoundLoader
 		public InvalidSoundDataException( string message ) : base( message ) { }
 		public InvalidSoundDataException( string message, Exception inner ) : base( message, inner ) { }
 	}
-}
-
-public class SoundData
-{
-	public uint Size;
-	public uint SampleRate;
-	public uint SampleCount;
-	public uint Bits;
-	public uint Channels;
-	public int LoopStart;
-	public int LoopEnd;
-	public short[] Samples;
-
-	// do we need these?
-	// public uint SampleSize;
-	// public float Duration;
 }
