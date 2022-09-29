@@ -1,6 +1,11 @@
 ﻿namespace SandMix.Nodes.Audio;
 
-public class BaseAudio : BaseNode
+public abstract class BaseAudio : BaseNode
 {
+	
 
+	public BaseAudio()
+	{
+
+	}
 }

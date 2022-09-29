@@ -38,11 +38,13 @@ public class BaseNodeConverter : JsonConverter<BaseNode>
 
 		string nodeTypeName = reader.GetString();
 
-		var nodeType = Library.GetType( nodeTypeName );
-		if ( nodeType is null )
+		var nodeTypeDescription = TypeLibrary.GetDescription( nodeTypeName );
+		if ( nodeTypeDescription is null )
 		{
 			throw new NotSupportedException( nodeTypeName );
 		}
+
+		var nodeType = nodeTypeDescription.TargetType;
 
 		if ( !reader.Read() || reader.GetString() != "NodeData" )
 		{
