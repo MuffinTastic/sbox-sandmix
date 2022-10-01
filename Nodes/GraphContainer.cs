@@ -33,7 +33,7 @@ public class GraphContainer
 
 	public void Remove( BaseNode node )
 	{
-		if ( Nodes.Contains( node ) )
+		if ( !Nodes.Contains( node ) )
 			return;
 
 		Nodes.Remove( node );
@@ -54,7 +54,7 @@ public class GraphContainer
 
 	public void Disconnect( string from, string to )
 	{
-		if ( Connections.Contains( (from, to) ) )
+		if ( !Connections.Contains( (from, to) ) )
 			return;
 
 		Connections.Remove( (from, to) );
