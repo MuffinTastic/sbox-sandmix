@@ -3,7 +3,7 @@ using Sandbox;
 
 namespace SandMix.Nodes.Test;
 
-[Library, Display( Name = "Test", GroupName = "Test" )]
+[Display( Name = "Test", GroupName = "Test" )]
 public class TestNode : BaseNode
 {
 	[Output, ResourceType("folder")]

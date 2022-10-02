@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace SandMix.Nodes.Maths;
 
-[Library, Icon( "remove" ), Display( Name = "Sub Float", Description = "Subtract one float from another", GroupName = "Maths" )]
+[Icon( "remove" ), Display( Name = "Sub Float", Description = "Subtract one float from another", GroupName = "Maths" )]
 public class FloatSubNode : BaseNode
 {
 	[Input, JsonIgnore]

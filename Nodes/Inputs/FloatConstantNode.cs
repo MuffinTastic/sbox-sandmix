@@ -3,7 +3,7 @@ using Sandbox;
 
 namespace SandMix.Nodes.Inputs;
 
-[Library, Display( Name = "Constant Float", Description = "Constant float input", GroupName = "Inputs" )]
+[Display( Name = "Constant Float", Description = "Constant float input", GroupName = "Inputs" )]
 public class FloatConstantNode : BaseNode
 {
 	[Output]

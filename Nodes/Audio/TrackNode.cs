@@ -5,7 +5,7 @@ using Sandbox;
 
 namespace SandMix.Nodes.Audio;
 
-[Library, Display( Name = "Track", Description = "Audio track - Sources from a .vsnd file", GroupName = "Audio" )]
+[Display( Name = "Track", Description = "Audio track - Sources from a .vsnd file", GroupName = "Audio" )]
 public class TrackNode : BaseAudio
 {
 	[ResourceType( "vsnd" )]

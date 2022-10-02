@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace SandMix.Nodes.Maths;
 
-[Library, Icon( "add" ), Display( Name = "Add Vector3", Description = "Add two Vector3s together", GroupName = "Maths" )]
+[Icon( "add" ), Display( Name = "Add Vector3", Description = "Add two Vector3s together", GroupName = "Maths" )]
 public class Vec3AddNode : BaseNode
 {
 	[Input, JsonIgnore]
