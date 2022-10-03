@@ -8,12 +8,19 @@ namespace SandMix.Nodes.Maths;
 [Icon( "add" ), Display( Name = "Add Float", Description = "Add two floats together", GroupName = "Maths" )]
 public class FloatAddNode : BaseNode
 {
-	[Input, JsonIgnore]
+	[Browsable( false ), Input, JsonIgnore]
 	public float X { get; set; }
 
-	[Input, JsonIgnore]
+	[Browsable( false ), Input, JsonIgnore]
 	public float Y { get; set; }
 
 	[Browsable( false ), Output, JsonIgnore]
-	public float Result => X + Y;
+	public float Result { get; set; }
+
+	// --- //
+
+	public override void Update()
+	{
+		Result = X + Y;
+	}
 }

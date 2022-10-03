@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Sandbox.Internal;
+using System;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace SandMix.Nodes;
 
@@ -17,6 +19,8 @@ public abstract class BaseNode
 
 	public string Name { get; set; }
 	public string Comment { get; set; }
+
+	// ----- //
 
 	public static string GetNewIdentifier()
 	{
@@ -44,6 +48,21 @@ public abstract class BaseNode
 	}
 
 	public class ConstantAttribute : Attribute
+	{
+
+	}
+
+	public virtual Task Load()
+	{
+		return SandMixUtil.CompletedTask;
+	}
+
+	public virtual void Unload()
+	{
+
+	}
+
+	public virtual void Update()
 	{
 
 	}

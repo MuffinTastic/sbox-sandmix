@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.Json;
@@ -117,4 +118,48 @@ public class GraphContainer
 			}
 		}
 	}
+
+	public void Validate()
+	{
+		var uniqueNodes = new HashSet<string>();
+		var uniqueInputs = new HashSet<string>();
+
+		foreach ( var connection in Connections )
+		{
+			var split1 = connection.Item1.Split( '.', 2 );
+			var split2 = connection.Item2.Split( '.', 2 );
+
+			uniqueNodes.Add( split1[0] );
+			uniqueNodes.Add( split2[0] );
+
+			uniqueInputs.Add( connection.Item2 );
+		}
+
+		// Check for missing nodes
+
+		foreach ( var nodeId in uniqueNodes )
+		{
+			if ( Find( nodeId ) is null )
+				throw new InvalidGraphException( $"Connection to missing node {nodeId}" );
+		}
+
+		// Check for two connections to the same input
+
+		foreach ( var inputId in uniqueInputs )
+		{
+			var to = FindTo( inputId );
+			if ( to.Count > 1 )
+				throw new InvalidGraphException( $"Multiple connections to single input {inputId}" );
+		}
+
+		// Validated
+	}
+
+	public class InvalidGraphException : Exception
+	{
+		public InvalidGraphException() : base() { }
+		public InvalidGraphException( string message ) : base( message ) { }
+		public InvalidGraphException( string message, Exception inner ) : base( message, inner ) { }
+	}
 }
+
