@@ -1,7 +1,9 @@
 ﻿using Sandbox.Internal;
 using System;
 using System.ComponentModel;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SandMix.Nodes;
@@ -65,5 +67,41 @@ public abstract class BaseNode
 	public virtual void Update()
 	{
 
+	}
+
+	protected string GetNodeError( string message )
+	{
+		var sb = new StringBuilder();
+
+		var info = Sandbox.DisplayInfo.For( this );
+		sb.Append( "Error loading " );
+		sb.Append( info.Name );
+		sb.Append( " node" );
+
+		if ( !string.IsNullOrEmpty( Name ))
+		{
+			sb.Append( " (" );
+			sb.Append( Name );
+			sb.Append( ")" );
+		}
+
+		sb.Append( ": " );
+
+		sb.Append( message );
+
+		return sb.ToString();
+	}
+
+	protected void NodeThrowIf( bool condition, string message )
+	{
+		if ( condition )
+			throw new NodeException( GetNodeError( message ) );
+	}
+
+	public class NodeException : Exception
+	{
+		public NodeException() : base() { }
+		public NodeException( string message ) : base( message ) { }
+		public NodeException( string message, Exception inner ) : base( message, inner ) { }
 	}
 }
