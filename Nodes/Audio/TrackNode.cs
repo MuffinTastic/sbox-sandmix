@@ -28,6 +28,8 @@ public class TrackNode : BaseAudio
 	{
 		Output = new AudioSamples();
 
+		Assert.False( string.IsNullOrEmpty( Track ), "Track node missing sound file" );
+
 		SoundFile = SoundFile.Load( Track );
 		
 		if ( !await SoundFile.LoadAsync() )

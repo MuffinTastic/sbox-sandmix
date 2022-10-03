@@ -49,10 +49,11 @@ public class MixGraph
 		Ready = false;
 		Graph = null;
 
-		var data = FileSystem.Mounted.ReadAllText( File );
-
 		try
 		{
+			Log.Info( $"Loading mixgraph {File}..." );
+			
+			var data = FileSystem.Mounted.ReadAllText( File );
 			Graph = GraphContainer.Deserialize( data );
 
 			if ( SandMix.Debug )
@@ -72,31 +73,39 @@ public class MixGraph
 
 			// Sets Ready
 			_ = LoadNodes();
-
-			Log.Info( $"Mixgraph {File} loaded" );
 		}
 		catch ( Exception ex )
 		{
-			Log.Error( $"Couldn't load mixgraph {File}: {ex.Message}" );
+			Log.Error( ex );
+			Log.Error( $"Couldn't load mixgraph {File} - see console" );
 		}
 	}
 
 
 	private async Task LoadNodes()
 	{
-		var tasks = new List<Task>();
-
-		foreach ( var node in Graph.Nodes )
+		try
 		{
-			tasks.Add( node.Load() );
-		}
+			var tasks = new List<Task>();
 
-		foreach ( var task in tasks )
-		{
-			await task;
-		}
+			foreach ( var node in Graph.Nodes )
+			{
+				tasks.Add( node.Load() );
+			}
+
+			foreach ( var task in tasks )
+			{
+				await task;
+			}
 		
-		Ready = true;
+			Ready = true;
+			Log.Info( $"Mixgraph {File} loaded" );
+		}
+		catch ( Exception ex )
+		{
+			Log.Error( ex );
+			Log.Error( $"Couldn't load mixgraph {File} - see console" );
+		}
 	}
 
 	[Event.Hotload]
