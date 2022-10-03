@@ -40,7 +40,8 @@ public class TrackNode : BaseAudio
 
 		TrackSamples = await SoundFile.GetSamplesAsync();
 
-		Log.Info( $"Loaded track {Track}, rate {SoundFile.Rate} channels {SoundFile.Channels}" );
+		if ( SandMix.Debug )
+			Log.Info( $"Loaded track {Track}, rate {SoundFile.Rate} channels {SoundFile.Channels}" );
 	}
 
 	public override void Update()

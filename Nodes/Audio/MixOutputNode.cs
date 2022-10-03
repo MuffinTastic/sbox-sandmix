@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -24,6 +24,8 @@ public class MixOutputNode : BaseAudio
 
 	public override Task Load()
 	{
+		NodeThrowIf( !Graph.FindTo( $"{Identifier}.Output" ).Any(), "Nothing connected" );
+
 		Output = new AudioSamples();
 
 		SoundOrigin = Sound.FromScreen( "core.soundscape_2d" );
@@ -36,7 +38,7 @@ public class MixOutputNode : BaseAudio
 	{
 		SoundOrigin.Stop();
 
-		SoundStream.Delete();
+		SoundStream?.Delete();
 		SoundStream = null;
 	}
 

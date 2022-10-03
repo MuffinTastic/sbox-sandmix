@@ -74,7 +74,7 @@ public abstract class BaseNode
 		var sb = new StringBuilder();
 
 		var info = Sandbox.DisplayInfo.For( this );
-		sb.Append( "Error loading " );
+		sb.Append( "Error in " );
 		sb.Append( info.Name );
 		sb.Append( " node" );
 

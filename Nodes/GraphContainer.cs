@@ -79,7 +79,14 @@ public class GraphContainer
 		};
 		options.Converters.Add( new BaseNodeConverter() );
 
-		return JsonSerializer.Deserialize( json, typeof( GraphContainer ), options ) as GraphContainer;
+		var graph = JsonSerializer.Deserialize( json, typeof( GraphContainer ), options ) as GraphContainer;
+
+		foreach ( var node in graph.Nodes )
+		{
+			node.Graph = graph;
+		}
+
+		return graph;
 	}
 
 	public string Serialize()
