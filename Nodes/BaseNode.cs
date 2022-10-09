@@ -49,11 +49,6 @@ public abstract class BaseNode
 
 	}
 
-	public class ConstantAttribute : Attribute
-	{
-
-	}
-
 	public virtual Task Load()
 	{
 		return SandMixUtil.CompletedTask;
