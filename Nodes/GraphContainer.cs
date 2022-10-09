@@ -70,7 +70,7 @@ public class GraphContainer
 		return Connections.Where( ( c ) => c.Item2 == to ).ToList();
 	}
 
-	public static GraphContainer Deserialize( string json )
+	public static GraphContainer Deserialize( string jsonb64 )
 	{
 		JsonSerializerOptions options = new()
 		{
@@ -78,6 +78,8 @@ public class GraphContainer
 			WriteIndented = true
 		};
 		options.Converters.Add( new BaseNodeConverter() );
+
+		var json = SandMixUtil.Base64Decode( jsonb64 );
 
 		var graph = JsonSerializer.Deserialize( json, typeof( GraphContainer ), options ) as GraphContainer;
 
@@ -98,7 +100,9 @@ public class GraphContainer
 		};
 		options.Converters.Add( new BaseNodeConverter() );
 
-		return JsonSerializer.Serialize( this, typeof( GraphContainer ), options );
+		var json = JsonSerializer.Serialize( this, typeof( GraphContainer ), options );
+
+		return SandMixUtil.Base64Encode( json );
 	}
 
 	public void RegenerateIdentifiers()

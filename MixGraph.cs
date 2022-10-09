@@ -3,6 +3,7 @@ using SandMix.Nodes;
 using SandMix.Nodes.Audio;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,9 +11,8 @@ namespace SandMix;
 
 public class MixGraph
 {
-	public string File { get; private set; }
+	public MixGraphResource Resource { get; private set; }
 
-	private FileWatch GraphWatch;
 	private GraphContainer Graph;
 
 	private List<LoadedConnection> LoadedConnections = new();
@@ -29,12 +29,27 @@ public class MixGraph
 
 	private bool Ready = false;
 
-	public MixGraph( string file )
+	private MixGraph( MixGraphResource resource )
 	{
-		File = file;
+		Resource = resource;
 
+		Resource.PostReloadEvent += ReloadGraph;
 		ReloadGraph();
 	}
+
+#if !SMIXTOOL
+	public static MixGraph Load( string file )
+	{
+		if ( ResourceLibrary.TryGet<MixGraphResource>( file, out var resource ) )
+		{
+			return new MixGraph( resource );
+		}
+		else
+		{
+			throw new FileNotFoundException( file );
+		}
+	}
+#endif
 
 	public void ReloadGraph()
 	{
@@ -51,10 +66,9 @@ public class MixGraph
 
 		try
 		{
-			Log.Info( $"Loading mixgraph {File}..." );
-			
-			var data = FileSystem.Mounted.ReadAllText( File );
-			Graph = GraphContainer.Deserialize( data );
+			Log.Info( $"Loading mixgraph {Resource.ResourcePath}..." );
+
+			Graph = GraphContainer.Deserialize( Resource.JsonData );
 
 			if ( SandMix.Debug )
 			{
@@ -77,7 +91,7 @@ public class MixGraph
 		catch ( Exception ex )
 		{
 			Log.Error( ex );
-			Log.Error( $"Couldn't load mixgraph {File} - see console" );
+			Log.Error( $"Couldn't load mixgraph {Resource.ResourcePath} - see console" );
 		}
 	}
 
@@ -99,12 +113,12 @@ public class MixGraph
 			}
 		
 			Ready = true;
-			Log.Info( $"Mixgraph {File} loaded" );
+			Log.Info( $"Mixgraph {Resource.ResourcePath} loaded" );
 		}
 		catch ( Exception ex )
 		{
 			Log.Error( ex );
-			Log.Error( $"Couldn't load mixgraph {File} - see console" );
+			Log.Error( $"Couldn't load mixgraph {Resource.ResourcePath} - see console" );
 		}
 	}
 
