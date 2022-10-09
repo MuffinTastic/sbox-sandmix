@@ -8,14 +8,16 @@ namespace SandMix.Nodes;
 
 public class GraphContainer
 {
+	public bool EffectGraph { get; set; }
+
 	[Browsable( true )]
 	public List<BaseNode> Nodes { get; set; } = new();
 	public List<(string, string)> Connections { get; set; } = new();
 
 
-	public GraphContainer()
+	public GraphContainer( bool effectGraph )
 	{
-		Nodes = new List<BaseNode>();
+		EffectGraph = effectGraph;
 	}
 
 	public bool Any()

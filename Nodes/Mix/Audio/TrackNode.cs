@@ -6,10 +6,10 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Sandbox;
 
-namespace SandMix.Nodes.Audio;
+namespace SandMix.Nodes.Mix.Audio;
 
 [Display( Name = "Track", Description = "Audio track - Sources from a .vsnd file", GroupName = "Audio" )]
-public class TrackNode : BaseAudio
+public class TrackNode : BaseMixNode
 {
 	[ResourceType( "vsnd" )]
 	public string Track { get; set; }

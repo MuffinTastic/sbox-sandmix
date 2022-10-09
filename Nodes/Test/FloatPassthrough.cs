@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SandMix.Nodes.Mix;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -6,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace SandMix.Nodes.Test;
 
 [Display( Name = "Float Passthrough", Description = "Just passing through", GroupName = "Test" )]
-class FloatPassthrough : BaseNode
+class FloatPassthrough : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]
 	public float Input { get; set; }

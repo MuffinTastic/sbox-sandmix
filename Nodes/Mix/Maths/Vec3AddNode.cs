@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace SandMix.Nodes.Maths;
+namespace SandMix.Nodes.Mix.Maths;
 
 [Icon( "add" ), Display( Name = "Add Vector3", Description = "Add two Vector3s together", GroupName = "Maths" )]
-public class Vec3AddNode : BaseNode
+public class Vec3AddNode : BaseMixNode
 {
 	[Input, JsonIgnore]
 	public Vector3 X { get; set; }

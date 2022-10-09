@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SandMix.Nodes.Maths;
+namespace SandMix.Nodes.Mix.Maths;
 
 [Display( Name = "Random Float", Description = "Generate a random float number within a range", GroupName = "Maths" )]
-public class FloatRandom : BaseNode
+public class FloatRandom : BaseMixNode
 {
 	public float Min { get; set; } = 0.0f;
 	public float Max { get; set; } = 1.0f;

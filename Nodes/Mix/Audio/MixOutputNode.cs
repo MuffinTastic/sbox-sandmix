@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SandMix.Nodes.Audio;
+namespace SandMix.Nodes.Mix.Audio;
 
 [Display( Name = "Mix Output", Description = "Plays the output of the mix as a single ingame sound stream", GroupName = "Audio" )]
-public class MixOutputNode : BaseAudio
+public class MixOutputNode : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]
 	public AudioSamples Output { get; set; }

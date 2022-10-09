@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 using SandMix.Nodes;
-using SandMix.Nodes.Audio;
+using SandMix.Nodes.Mix.Audio;
 using System;
 using System.Collections.Generic;
 using System.IO;
