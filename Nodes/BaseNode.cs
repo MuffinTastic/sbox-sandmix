@@ -34,9 +34,9 @@ public abstract class BaseNode
 		Identifier = GetNewIdentifier();
 	}
 
-	public bool IsNamed( string name )
+	public bool HasIdentifier( string id )
 	{
-		return string.Equals( name, Identifier, StringComparison.OrdinalIgnoreCase );
+		return string.Equals( id, Identifier, StringComparison.OrdinalIgnoreCase );
 	}
 
 	public class InputAttribute : Attribute
@@ -91,6 +91,11 @@ public abstract class BaseNode
 	{
 		if ( condition )
 			throw new NodeException( GetNodeError( message ) );
+	}
+
+	protected void NodeThrow( string message )
+	{
+		throw new NodeException( GetNodeError( message ) );
 	}
 
 	public class NodeException : Exception

@@ -3,21 +3,33 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SandMix.Nodes;
 
+public enum GraphType : int
+{
+	Mix,
+	Effect
+}
+
 public class GraphContainer
 {
-	public bool EffectGraph { get; set; }
+	public GraphType GraphType { get; set; }
 
 	[Browsable( true )]
 	public List<BaseNode> Nodes { get; set; } = new();
 	public List<(string, string)> Connections { get; set; } = new();
 
-
-	public GraphContainer( bool effectGraph )
+	[JsonConstructor]
+	public GraphContainer()
 	{
-		EffectGraph = effectGraph;
+
+	}
+
+	public GraphContainer( GraphType type )
+	{
+		GraphType = type;
 	}
 
 	public bool Any()
@@ -42,9 +54,9 @@ public class GraphContainer
 		Nodes.Remove( node );
 	}
 
-	public BaseNode Find( string name )
+	public BaseNode Find( string id )
 	{
-		return Nodes.FirstOrDefault( x => x.IsNamed( name ) );
+		return Nodes.FirstOrDefault( x => x.HasIdentifier( id ) );
 	}
 
 	public void Connect( string from, string to )
@@ -72,16 +84,16 @@ public class GraphContainer
 		return Connections.Where( ( c ) => c.Item2 == to ).ToList();
 	}
 
-	public static GraphContainer Deserialize( string jsonb64 )
+	public static GraphContainer Deserialize( string json )
 	{
 		JsonSerializerOptions options = new()
 		{
 			IncludeFields = true,
-			WriteIndented = true
+			// WriteIndented = true
 		};
 		options.Converters.Add( new BaseNodeConverter() );
 
-		var json = SandMixUtil.Base64Decode( jsonb64 );
+		//json = SandMixUtil.Base64Decode( json );
 
 		var graph = JsonSerializer.Deserialize( json, typeof( GraphContainer ), options ) as GraphContainer;
 
@@ -98,13 +110,13 @@ public class GraphContainer
 		JsonSerializerOptions options = new()
 		{
 			IncludeFields = true,
-			WriteIndented = true
+			// WriteIndented = true
 		};
 		options.Converters.Add( new BaseNodeConverter() );
 
 		var json = JsonSerializer.Serialize( this, typeof( GraphContainer ), options );
 
-		return SandMixUtil.Base64Encode( json );
+		return json; // SandMixUtil.Base64Encode( json );
 	}
 
 	public void RegenerateIdentifiers()
