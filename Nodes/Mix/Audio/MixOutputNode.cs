@@ -12,7 +12,7 @@ namespace SandMix.Nodes.Mix.Audio;
 public class MixOutputNode : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]
-	public AudioSamples Output { get; set; }
+	public float[][] Output { get; set; }
 
 	// ----- //
 
@@ -26,10 +26,8 @@ public class MixOutputNode : BaseMixNode
 	{
 		NodeThrowIf( !Graph.FindTo( $"{Identifier}.Output" ).Any(), "Nothing connected" );
 
-		Output = new AudioSamples();
-
 		SoundOrigin = Sound.FromScreen( "core.soundscape_2d" );
-		SoundStream = SoundOrigin.CreateStream( SandMix.SampleRate / 2, 2 ); // Why / 2?
+		SoundStream = SoundOrigin.CreateStream( SandMix.SampleRate, 2 ); // Why / 2?
 
 		return SandMixUtil.CompletedTask;
 	}
@@ -44,8 +42,10 @@ public class MixOutputNode : BaseMixNode
 
 	public override void Update()
 	{
-		SoundStream.WriteData( Output.Samples.AsSpan() );
-		//Log.Info( SoundStream.QueuedSampleCount );
+		if ( Output is null ) return;
+
+		var data = SandMixUtil.GetStreamSamples( Output );
+		SoundStream.WriteData( data.AsSpan() );
 	}
 #endif
 }

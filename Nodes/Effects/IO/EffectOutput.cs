@@ -8,5 +8,5 @@ namespace SandMix.Nodes.Effects.IO;
 public class EffectOutput : BaseEffectNode
 {
 	[Browsable( false ), Input, JsonIgnore]
-	public AudioSamples Output { get; set; }
+	public float[][] Output { get; set; }
 }

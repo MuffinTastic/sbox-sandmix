@@ -11,10 +11,10 @@ namespace SandMix.Nodes.Effects;
 public abstract class BaseEffectImplementation : BaseEffectNode
 {
 	[Browsable( false ), Input, JsonIgnore]
-	public AudioSamples Input { get; set; }
+	public float[][] Input { get; set; }
 
 	[Browsable( false ), Output, JsonIgnore]
-	public AudioSamples Output { get; set; }
+	public float[][] Output { get; set; }
 
-	public abstract void ProcessEffect( ref float[] input, ref float[] output );
+	public abstract void ProcessEffect( ref float[][] input, ref float[][] output );
 }

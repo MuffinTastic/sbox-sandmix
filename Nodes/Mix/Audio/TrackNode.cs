@@ -15,45 +15,41 @@ public class TrackNode : BaseMixNode
 	public string Track { get; set; }
 
 	[Browsable( false ), Output, JsonIgnore]
-	public AudioSamples Output { get; set; }
+	public float[][] Output { get; set; }
 
 	// ----- //
 
-	private SoundFile SoundFile = null;
-	private short[] TrackSamples = null;
+	private SoundData SoundData = null;
+	private float[][] SoundSamples = null;
 
 	private int CurrentPosition = 0;
 
 	public override async Task Load()
 	{
-		Output = new AudioSamples();
+		Output = SandMixUtil.CreateBuffers();
 
 		NodeThrowIf( string.IsNullOrEmpty( Track ), "Sound file missing" );
 
-		SoundFile = SoundFile.Load( Track );
-		
-		if ( !await SoundFile.LoadAsync() )
-		{
-			Log.Warning( $"MixGraph couldn't load track {Track}" );
-			return;
-		}
-
-		TrackSamples = await SoundFile.GetSamplesAsync();
+		SoundData = SoundLoader.LoadSamples( Track );
+		SoundSamples = SandMixUtil.GetSoundChannels( SoundData );
 
 		if ( SandMix.Debug )
-			Log.Info( $"Loaded track {Track}, rate {SoundFile.Rate} channels {SoundFile.Channels}" );
+			Log.Info( $"Loaded track {Track}, rate {SoundData.SampleRate} channels {SoundData.Channels}" );
 	}
 
 	public override void Update()
 	{
-		if ( TrackSamples is null ) return;
+		if ( SoundSamples is null ) return;
 
-		var samples = TrackSamples.AsSpan();
-		var copyLength = Math.Min( samples.Length - CurrentPosition, SandMix.SampleSize );
-		Output.CopyFrom( samples.Slice( CurrentPosition, copyLength ) );
+		var copyLength = Math.Min( SoundSamples[0].Length - CurrentPosition, SandMix.SampleSize );
+
+		for ( int i = 0; i < SandMix.Channels; i++ )
+		{
+			SoundSamples[i].AsSpan().Slice( CurrentPosition, copyLength ).CopyTo( Output[i] );
+		}
 
 		CurrentPosition += SandMix.SampleSize;
-		if ( CurrentPosition > TrackSamples.Length )
+		if ( CurrentPosition > SoundSamples[0].Length )
 			CurrentPosition = 0;
 	}
 }

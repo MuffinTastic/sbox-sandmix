@@ -4,7 +4,9 @@ namespace SandMix;
 
 public static class SandMix
 {
-	public const int SampleRate = 44100; // Don't change this
+	// Don't change these
+	public const int Channels = 2;
+	public const int SampleRate = 44100; 
 
 	public const int SampleSize = 1024;
 	

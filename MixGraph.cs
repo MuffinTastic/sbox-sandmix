@@ -28,6 +28,7 @@ public class MixGraph
 	}
 
 	private bool Ready = false;
+	private RealTimeSince LastLoaded = 1;
 
 	private MixGraph( MixGraphResource resource )
 	{
@@ -53,6 +54,11 @@ public class MixGraph
 
 	public void ReloadGraph()
 	{
+		if ( LastLoaded < 0.1f )
+			return;
+
+		LastLoaded = 0;
+
 		if ( Graph is not null )
 		{
 			foreach ( var node in Graph.Nodes )

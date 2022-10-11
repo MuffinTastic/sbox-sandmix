@@ -17,10 +17,10 @@ namespace SandMix.Nodes.Mix.Audio;
 public class MixEffectNode : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]
-	public AudioSamples Input { get; set; }
+	public float[][] Input { get; set; }
 
 	[Browsable( false ), Output, JsonIgnore]
-	public AudioSamples Output { get; set; }
+	public float[][] Output { get; set; }
 
 	[ResourceType( EffectResource.FileExtension )]
 	public string Effect { get; set; }
@@ -30,13 +30,24 @@ public class MixEffectNode : BaseMixNode
 	private EffectResource Resource;
 	private List<BaseEffectImplementation> EffectNodes;
 
+	private float[][][] Buffers;
+
 #if !SMIXTOOL
 	public override Task Load()
 	{
+		Output = SandMixUtil.CreateBuffers();
+
 		NodeThrowIf( string.IsNullOrEmpty( Effect ), "Effect missing" );
 
 		Resource = ResourceLibrary.Get<EffectResource>( Effect );
 		NodeThrowIf( Resource is null, $"Couldn't load effect {Effect}" );
+
+		Buffers = new float[2][][];
+
+		for ( int i = 0; i < 2; i++ )
+		{
+			Buffers[i] = SandMixUtil.CreateBuffers();
+		}
 
 		Resource.PostReloadEvent += Reload;
 
@@ -86,8 +97,8 @@ public class MixEffectNode : BaseMixNode
 			{
 				var effectNode = currentNode as BaseEffectImplementation;
 				NodeThrowIf( effectNode is null, $"{Effect} contains a non-effect node" );
-				
-				Log.Info( $"EFFECT NAME {effectNode.Name}" );
+
+				_ = effectNode.Load();
 				EffectNodes.Add( effectNode );
 			}
 		}
@@ -101,13 +112,28 @@ public class MixEffectNode : BaseMixNode
 
 	public override void Update()
 	{
-		float[] sampleBuffer1 = new float[SandMix.SampleSize];
-		float[] sampleBuffer2 = new float[SandMix.SampleSize];
+		if ( Input is null || Output is null || Buffers is null )
+		{
+			return;
+		}
 
-		ref var inputArray = ref sampleBuffer1;
-		ref var outputArray = ref sampleBuffer2;
+		if ( !EffectNodes.Any() )
+		{
+			for ( int i = 0; i < SandMix.Channels; i++ )
+			{
+				Input[i].CopyTo( Output[i].AsSpan() );
+			}
 
-		//Input.Samples.CopyTo( inputArray, 0 );
+			return;
+		}
+
+		ref var inputArray = ref Buffers[0];
+		ref var outputArray = ref Buffers[1];
+
+		for ( int i = 0; i < SandMix.Channels; i++ )
+		{
+			Input[i].CopyTo( inputArray[i].AsSpan() );
+		}
 
 		for ( int i = 0; i < EffectNodes.Count; i++ )
 		{
@@ -122,7 +148,10 @@ public class MixEffectNode : BaseMixNode
 			EffectNodes[i].ProcessEffect( ref inputArray, ref outputArray );
 		}
 
-		//outputArray.CopyTo( Output.Samples, 0 );
+		for ( int i = 0; i < SandMix.Channels; i++ )
+		{
+			outputArray[i].CopyTo( Output[i].AsSpan() );
+		}
 	}
 #endif
 }
