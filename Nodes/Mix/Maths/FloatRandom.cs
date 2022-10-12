@@ -28,13 +28,14 @@ public class FloatRandom : BaseMixNode
 		return SandMixUtil.CompletedTask;
 	}
 
-	public override void Update()
+	public override void ProcessMix()
 	{
 		var sample = Random.NextDouble();
 		var scaled = (sample * Range) + Min;
 		Output = (float) scaled;
 
-		if ( SandMix.Debug )
-			Log.Info( $"Generated {Output}" );
+		Log.Info( $"node {Name ?? GetType().Name}, output {Output}" );
+
+		SetDoneProcessing();
 	}
 }

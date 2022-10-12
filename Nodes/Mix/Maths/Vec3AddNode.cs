@@ -8,12 +8,23 @@ namespace SandMix.Nodes.Mix.Maths;
 [Icon( "add" ), Display( Name = "Add Vector3", Description = "Add two Vector3s together", GroupName = "Maths" )]
 public class Vec3AddNode : BaseMixNode
 {
-	[Input, JsonIgnore]
+	[Browsable( false ), Input, JsonIgnore]
 	public Vector3 X { get; set; }
 
-	[Input, JsonIgnore]
+	[Browsable( false ), Input, JsonIgnore]
 	public Vector3 Y { get; set; }
 
 	[Browsable( false ), Output, JsonIgnore]
-	public Vector3 Result => X + Y;
+	public Vector3 Output { get; set; }
+
+	// --- //
+
+	public override void ProcessMix()
+	{
+		Output = X + Y;
+
+		Log.Info( $"node {Name}, x {X} y {Y} result {Output}" );
+
+		SetDoneProcessing();
+	}
 }

@@ -24,20 +24,22 @@ public class TrackNode : BaseMixNode
 
 	private int CurrentPosition = 0;
 
-	public override async Task Load()
+	public override Task Load()
 	{
-		Output = SandMixUtil.CreateBuffers();
-
 		NodeThrowIf( string.IsNullOrEmpty( Track ), "Sound file missing" );
+
+		Output = SandMixUtil.CreateBuffers();
 
 		SoundData = SoundLoader.LoadSamples( Track );
 		SoundSamples = SandMixUtil.GetSoundChannels( SoundData );
 
 		if ( SandMix.Debug )
 			Log.Info( $"Loaded track {Track}, rate {SoundData.SampleRate} channels {SoundData.Channels}" );
+
+		return SandMixUtil.CompletedTask;
 	}
 
-	public override void Update()
+	public override void ProcessMix()
 	{
 		if ( SoundSamples is null ) return;
 
@@ -51,5 +53,7 @@ public class TrackNode : BaseMixNode
 		CurrentPosition += SandMix.SampleSize;
 		if ( CurrentPosition > SoundSamples[0].Length )
 			CurrentPosition = 0;
+
+		SetDoneProcessing();
 	}
 }

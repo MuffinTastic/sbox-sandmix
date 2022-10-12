@@ -84,6 +84,16 @@ public class GraphContainer
 		return Connections.Where( ( c ) => c.Item2 == to ).ToList();
 	}
 
+	public List<(string, string)> FindFrom( BaseNode node, string from )
+	{
+		return FindFrom( $"{node.Identifier}.{from}" );
+	}
+
+	public List<(string, string)> FindTo( BaseNode node, string to )
+	{
+		return FindTo( $"{node.Identifier}.{to}" );
+	}
+
 	public static GraphContainer Deserialize( string json )
 	{
 		JsonSerializerOptions options = new()

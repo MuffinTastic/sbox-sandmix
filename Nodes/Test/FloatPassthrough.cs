@@ -17,11 +17,13 @@ class FloatPassthrough : BaseMixNode
 
 	// --- //
 
-	public override void Update()
+	public override void ProcessMix()
 	{
 		Output = Input;
 
 		if ( SandMix.Debug )
 			Log.Info( $"Passthrough {Output}" );
+
+		SetDoneProcessing();
 	}
 }

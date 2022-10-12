@@ -25,7 +25,7 @@ public class MixOutputNode : BaseMixNode
 	public override Task Load()
 	{
 		NodeThrowIf( !Graph.FindTo( $"{Identifier}.Output" ).Any(), "Nothing connected" );
-
+		
 		SoundOrigin = Sound.FromScreen( "core.soundscape_2d" );
 		SoundStream = SoundOrigin.CreateStream( SandMix.SampleRate, 2 ); // Why / 2?
 
@@ -40,12 +40,19 @@ public class MixOutputNode : BaseMixNode
 		SoundStream = null;
 	}
 
-	public override void Update()
+	public override void ProcessMix()
 	{
 		if ( Output is null ) return;
 
 		var data = SandMixUtil.GetStreamSamples( Output );
 		SoundStream.WriteData( data.AsSpan() );
+
+		SetDoneProcessing();
+	}
+#else
+	public override void ProcessMix()
+	{
+		throw new NotImplementedException();
 	}
 #endif
 }

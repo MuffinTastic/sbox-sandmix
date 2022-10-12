@@ -14,9 +14,11 @@ class FloatOutput : BaseMixNode
 
 	// --- //
 
-	public override void Update()
+	public override void ProcessMix()
 	{
 		if ( SandMix.Debug )
 			Log.Info( $"Output {Output}" );
+
+		SetDoneProcessing();
 	}
 }

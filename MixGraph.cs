@@ -1,10 +1,13 @@
 ﻿using Sandbox;
+using Sandbox.Utility;
 using SandMix.Nodes;
+using SandMix.Nodes.Mix;
 using SandMix.Nodes.Mix.Audio;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SandMix;
@@ -16,15 +19,18 @@ public class MixGraph
 	private GraphContainer Graph;
 
 	private List<LoadedConnection> LoadedConnections = new();
-	private List<MixOutputNode> OutputNodes;
+	private MixOutputNode OutputNode;
 
 	private struct LoadedConnection
 	{
-		public BaseNode OutputNode;
+
+
+		public BaseMixNode OutputNode;
 		public PropertyDescription OutputProperty;
 
-		public BaseNode InputNode;
+		public BaseMixNode InputNode;
 		public PropertyDescription InputProperty;
+		public uint InputCRC;
 	}
 
 	private bool Ready = false;
@@ -86,10 +92,12 @@ public class MixGraph
 			
 			Graph.Validate();
 
-			LoadConnections();
+			if ( Graph.GraphType != GraphType.Mix )
+			{
+				throw new GraphContainer.InvalidGraphException( "Not a mix graph!" );
+			}
 
-			if ( !OutputNodes.Any() )
-				throw new GraphContainer.InvalidGraphException( "No output nodes" );
+			LoadConnections();
 
 			// Sets Ready
 			_ = LoadNodes();
@@ -117,7 +125,7 @@ public class MixGraph
 			{
 				await task;
 			}
-		
+
 			Ready = true;
 			Log.Info( $"Mixgraph {Resource.ResourcePath} loaded" );
 		}
@@ -132,21 +140,23 @@ public class MixGraph
 	private void LoadConnections()
 	{
 		LoadedConnections.Clear();
-		OutputNodes?.Clear();
+		OutputNode = null;
 
 		foreach ( var connection in Graph.Connections )
 		{
 			var split1 = connection.Item1.Split( '.', 2 );
 			var split2 = connection.Item2.Split( '.', 2 );
 
-			BaseNode outputNode = Graph.Find( split1[0] );
-			BaseNode inputNode = Graph.Find( split2[0] );
+			var outputNode = (BaseMixNode) Graph.Find( split1[0] );
+			var inputNode = (BaseMixNode) Graph.Find( split2[0] );
 
 			var output = split1[1];
 			var input = split2[1];
 
 			var outputProperty = TypeLibrary.GetDescription( outputNode.GetType() ).GetProperty( output );
 			var inputProperty = TypeLibrary.GetDescription( inputNode.GetType() ).GetProperty( input );
+
+			inputNode.AddReadyInput( inputProperty );
 
 			var loadedConnection = new LoadedConnection()
 			{
@@ -155,59 +165,153 @@ public class MixGraph
 
 				InputNode = inputNode,
 				InputProperty = inputProperty,
+				InputCRC = BaseMixNode.GetInputId( inputProperty )
 			};
 
 			LoadedConnections.Add( loadedConnection );
 		}
 
-		OutputNodes = Graph.Nodes.OfType<MixOutputNode>().ToList();
+		var outputNodes = Graph.Nodes.OfType<MixOutputNode>();
+		var count = outputNodes.Count();
+
+		if ( count == 0 )
+			throw new GraphContainer.InvalidGraphException( "No output nodes" );
+		else if ( count > 1 )
+			throw new GraphContainer.InvalidGraphException( "More than one output node" );
+
+		OutputNode = outputNodes.First();
 	}
 
-	public void Update( int passes = 0 )
-	{
 #if !SMIXTOOL
+	public void Update()
+	{
 		if ( !Ready ) return;
 
 		try
 		{
-			if ( passes < SandMix.UpdatePasses )
+			// Run updates until queued sample count is above the desired amount
+			while ( OutputNode.Queued < SandMix.UpdateSampleMin )
 			{
-				var minimumQueued = OutputNodes.Select( n => n.Queued ).Min();
-
-				if ( minimumQueued > SandMix.UpdateSampleMax )
-					return;
-			}
-
-			// Update nodes
-			foreach ( var node in Graph.Nodes )
-			{
-				node.Update();
-			}
-
-			// Propagate data
-			foreach ( var connection in LoadedConnections )
-			{
-				var value = connection.OutputProperty.GetValue( connection.OutputNode );
-				connection.InputProperty.SetValue( connection.InputNode, value );
-			}
-
-			if ( passes < SandMix.UpdatePasses )
-			{
-				var minimumQueued = OutputNodes.Select( n => n.Queued ).Min();
-
-				if ( minimumQueued < SandMix.UpdateSampleMin )
+				// Reset nodes for current update
+				foreach ( var node in Graph.Nodes )
 				{
-					Update( passes + 1 );
+					var mixNode = (BaseMixNode)node;
+					mixNode.Reset();
+				}
+
+				// Run update passes until outputnode can queue audio
+				while ( !OutputNode.DoneProcessing )
+				{
+					// We can skip an extra loop and save unnecessary processing
+					// from unconnected nodes by just going through connections
+					foreach ( var connection in LoadedConnections )
+					{
+						var inputNode = connection.InputNode;
+						var outputNode = connection.OutputNode;
+
+						// Are inputs ready but we haven't processed data yet? Do it!
+						if ( outputNode.IsReady && !outputNode.DoneProcessing )
+							outputNode.ProcessMix();
+
+						// Is there data ready that we haven't copied yet? Do it!
+						if ( outputNode.DoneProcessing && !inputNode.GetReady( connection.InputCRC ) )
+						{
+							var value = connection.OutputProperty.GetValue( outputNode );
+							connection.InputProperty.SetValue( inputNode, value );
+
+							inputNode.SetReady( connection.InputCRC );
+						}
+					}
+
+					// By skipping unconnected nodes like that though, we also skip the output
+					// So let's do this manually
+					if ( OutputNode.IsReady )
+					{
+						// Update is done, play them samples
+						OutputNode.ProcessMix();
+					}
 				}
 			}
 		}
-		//catch ( TargetException ex )
+		// catch ( TargetException ex )
+		// Why is this exception not whitelisted?
+		// Let's just... check the error string :)
 		catch ( Exception ex ) when ( ex.Message == "Object does not match target type." )
 		{
-			// This happens because of hotloading
-			// Try loading stuff again
+			// When hotloading some objects become invalid and throw this exception, rebuild them
 			LoadConnections();
 		}
-#endif
 	}
+
+	public void SyncNodes()
+	{
+		var uniqueNodes = new HashSet<BaseNode>();
+		var hierarchy = new List<HashSet<BaseNode>>();
+		
+		hierarchy.Add( new HashSet<BaseNode>() );
+		hierarchy.Last().Add( OutputNode );
+		uniqueNodes.Add( OutputNode );
+
+		int lastConnectionCount = 0;
+		do
+		{
+			var lastLevel = hierarchy.Last();
+			hierarchy.Add( new HashSet<BaseNode>() );
+			var currentLevel = hierarchy.Last();
+
+			foreach ( var node in lastLevel )
+			{
+				lastConnectionCount = 0;
+
+				for( int i = 0; i < Graph.Connections.Count; i++ )
+				{
+					var connection = Graph.Connections[i];
+					var split1 = connection.Item1.Split( '.', 2 );
+					var split2 = connection.Item2.Split( '.', 2 );
+
+					if ( split2[0] != node.Identifier )
+					{
+						continue;
+					}
+
+					var connectedNode = Graph.Find( split1[0] );
+
+					if ( connectedNode is not null )
+					{
+						if ( uniqueNodes.Contains( connectedNode ) )
+						{
+							throw new GraphContainer.InvalidGraphException( "Circular path detected!" );
+						}
+
+						currentLevel.Add( connectedNode );
+						uniqueNodes.Add( OutputNode );
+						lastConnectionCount++;
+					}
+				}
+			}
+
+
+		}
+		while ( lastConnectionCount != 0 );
+
+		int j = 0;
+		StringBuilder sb = new();
+		foreach ( var level in hierarchy )
+		{
+			sb.Clear();
+			sb.Append( "Level " );
+			sb.Append( j );
+			sb.Append( ": " );
+
+			foreach ( var node in level )
+			{
+				sb.Append( node.GetType().Name );
+				sb.Append( ", " );
+			}
+
+			Log.Info( sb.ToString() );
+			j++;
+		}
+	}
+#endif
 }

@@ -35,13 +35,12 @@ public class MixEffectNode : BaseMixNode
 #if !SMIXTOOL
 	public override Task Load()
 	{
-		Output = SandMixUtil.CreateBuffers();
-
 		NodeThrowIf( string.IsNullOrEmpty( Effect ), "Effect missing" );
 
 		Resource = ResourceLibrary.Get<EffectResource>( Effect );
 		NodeThrowIf( Resource is null, $"Couldn't load effect {Effect}" );
 
+		Output = SandMixUtil.CreateBuffers();
 		Buffers = new float[2][][];
 
 		for ( int i = 0; i < 2; i++ )
@@ -85,7 +84,7 @@ public class MixEffectNode : BaseMixNode
 		while ( currentNode != outputNode )
 		{
 			string plug = currentNode == inputNode ? "Input" : "Output";
-			var connections = graph.FindFrom( $"{currentNode.Identifier}.{plug}" );
+			var connections = graph.FindFrom( currentNode, plug );
 			NodeThrowIf( connections.Count != 1, $"{Effect} must have a valid connection" );
 			var connection = connections.First();
 
@@ -110,7 +109,7 @@ public class MixEffectNode : BaseMixNode
 		EffectNodes = null;
 	}
 
-	public override void Update()
+	public override void ProcessMix()
 	{
 		if ( Input is null || Output is null || Buffers is null )
 		{
@@ -152,6 +151,13 @@ public class MixEffectNode : BaseMixNode
 		{
 			outputArray[i].CopyTo( Output[i].AsSpan() );
 		}
+
+		SetDoneProcessing();
+	}
+#else
+	public override void ProcessMix()
+	{
+		throw new NotImplementedException();
 	}
 #endif
 }

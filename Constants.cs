@@ -11,8 +11,7 @@ public static class SandMix
 	public const int SampleSize = 1024;
 	
 	public const int UpdatePasses = 5;
-	public const int UpdateSampleMin = 512;
-	public const int UpdateSampleMax = 4096;
+	public const int UpdateSampleMin = 2048;
 
 
 	[ConVar.Client( "smix_debug" )]

@@ -9,18 +9,22 @@ namespace SandMix.Nodes.Mix.Maths;
 public class FloatAddNode : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]
-	public float X { get; set; }
+	public float X { get; set; } = 0;
 
 	[Browsable( false ), Input, JsonIgnore]
-	public float Y { get; set; }
+	public float Y { get; set; } = 0;
 
 	[Browsable( false ), Output, JsonIgnore]
-	public float Result { get; set; }
+	public float Output { get; set; }
 
 	// --- //
 
-	public override void Update()
+	public override void ProcessMix()
 	{
-		Result = X + Y;
+		Output = X + Y;
+
+		Log.Info( $"node {Name}, x {X} y {Y} result {Output}" );
+
+		SetDoneProcessing();
 	}
 }

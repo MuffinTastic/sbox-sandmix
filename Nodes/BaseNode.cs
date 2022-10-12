@@ -1,9 +1,7 @@
-﻿using Sandbox.Internal;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SandMix.Nodes;
@@ -55,11 +53,6 @@ public abstract class BaseNode
 	}
 
 	public virtual void Unload()
-	{
-
-	}
-
-	public virtual void Update()
 	{
 
 	}

@@ -8,4 +8,9 @@ public class FloatConstantNode : BaseMixNode
 {
 	[Output]
 	public float Value { get; set; } = 0;
+
+	public override void ProcessMix()
+	{
+		SetDoneProcessing();
+	}
 }
