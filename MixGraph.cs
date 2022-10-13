@@ -1,13 +1,12 @@
 ﻿using Sandbox;
-using Sandbox.Utility;
 using SandMix.Nodes;
 using SandMix.Nodes.Mix;
 using SandMix.Nodes.Mix.Audio;
+using SandMix.Nodes.Mix.Inputs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SandMix;
@@ -19,6 +18,8 @@ public class MixGraph
 	private GraphContainer Graph;
 
 	private List<LoadedConnection> LoadedConnections = new();
+
+	private Dictionary<string, FloatInputNode> InputNodes = new();
 	private MixOutputNode OutputNode;
 
 	private struct LoadedConnection
@@ -109,7 +110,6 @@ public class MixGraph
 		}
 	}
 
-
 	private async Task LoadNodes()
 	{
 		try
@@ -140,6 +140,7 @@ public class MixGraph
 	private void LoadConnections()
 	{
 		LoadedConnections.Clear();
+		InputNodes.Clear();
 		OutputNode = null;
 
 		foreach ( var connection in Graph.Connections )
@@ -156,7 +157,7 @@ public class MixGraph
 			var outputProperty = TypeLibrary.GetDescription( outputNode.GetType() ).GetProperty( output );
 			var inputProperty = TypeLibrary.GetDescription( inputNode.GetType() ).GetProperty( input );
 
-			inputNode.AddReadyInput( inputProperty );
+			inputNode.AddConnectedInput( inputProperty );
 
 			var loadedConnection = new LoadedConnection()
 			{
@@ -169,6 +170,14 @@ public class MixGraph
 			};
 
 			LoadedConnections.Add( loadedConnection );
+
+			if ( outputNode is FloatInputNode floatInputNode )
+			{
+				if ( !string.IsNullOrEmpty( floatInputNode.Name ) )
+				{
+					InputNodes.Add( floatInputNode.Name, floatInputNode );
+				}
+			}
 		}
 
 		var outputNodes = Graph.Nodes.OfType<MixOutputNode>();
@@ -198,6 +207,8 @@ public class MixGraph
 					var mixNode = (BaseMixNode)node;
 					mixNode.Reset();
 				}
+
+				int passes = 0;
 
 				// Run update passes until outputnode can queue audio
 				while ( !OutputNode.DoneProcessing )
@@ -230,6 +241,13 @@ public class MixGraph
 						// Update is done, play them samples
 						OutputNode.ProcessMix();
 					}
+
+					passes++;
+
+					if ( passes > SandMix.UpdateMaxPasses )
+					{
+						throw new Exception( "Caught infinite loop - did someone forget SetDoneProcessing() in a node?" );
+					}
 				}
 			}
 		}
@@ -240,6 +258,21 @@ public class MixGraph
 		{
 			// When hotloading some objects become invalid and throw this exception, rebuild them
 			LoadConnections();
+		}
+	}
+
+	public void SetInput( string name, float value )
+	{
+		if ( InputNodes.TryGetValue( name, out FloatInputNode node ) )
+		{
+			if ( node is null ) return;
+
+			node.Value = value;
+		}
+		else
+		{
+			Log.Warning( $"Tried to set invalid mixgraph input '{name}', ignoring" );
+			InputNodes.Add( name, null );
 		}
 	}
 #endif

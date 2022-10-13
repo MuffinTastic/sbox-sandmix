@@ -25,7 +25,7 @@ public abstract class BaseMixNode : BaseNode
 	/// Register this input as connected, so that processing can wait on it
 	/// </summary>
 	/// <param name="input"></param>
-	public void AddReadyInput( PropertyDescription input )
+	public void AddConnectedInput( PropertyDescription input )
 	{
 		Assert.NotNull( input.GetCustomAttribute<InputAttribute>() );
 
