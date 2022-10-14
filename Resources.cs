@@ -1,9 +1,7 @@
-﻿using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Sandbox;
+using Tools;
+using SandMix.Nodes;
 
 namespace SandMix;
 
@@ -24,9 +22,30 @@ public abstract class SandMixResource : GameResource
 	{
 		PostReloadEvent?.Invoke();
 	}
+
+#if SMIXTOOL
+	public static (SandMixResource, GraphType) GetFromAsset( Asset asset )
+	{
+		var graphType = asset.AssetType.FileExtension switch
+		{
+			MixGraphResource.FileExtension => GraphType.Mix,
+			EffectResource.FileExtension => GraphType.Effect,
+			_ => throw new Exception( "Unknown graph type" )
+		};
+
+		SandMixResource resource = graphType switch
+		{
+			GraphType.Mix => asset.LoadResource<MixGraphResource>(),
+			GraphType.Effect => asset.LoadResource<EffectResource>(),
+			_ => throw new Exception( "Unknown graph type" )
+		};
+
+		return (resource, graphType);
+	}
+#endif
 }
 
-[GameResource( "s&mix mixgraph", "smix", "Mixgraph for live audio processing with s&mix", Icon = Icon )]
+[GameResource( $"{SandMix.ProjectName} mixgraph", FileExtension, $"Mixgraph for live audio processing with {SandMix.ProjectName}", Icon = Icon )]
 public partial class MixGraphResource : SandMixResource
 {
 	public const string Icon = "account_tree";
@@ -34,7 +53,7 @@ public partial class MixGraphResource : SandMixResource
 }
 
 
-[GameResource( "s&mix effect", "smixefct", "Effect preset for s&mix", Icon = Icon )]
+[GameResource( $"{SandMix.ProjectName} effect", FileExtension, $"Effect preset for {SandMix.ProjectName}", Icon = Icon )]
 public partial class EffectResource : SandMixResource
 {
 	public const string Icon = "leak_add";
