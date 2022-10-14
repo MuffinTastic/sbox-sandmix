@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using Sandbox;
 using SandMix.Nodes.Effects;
 
-namespace SandMix.Nodes.Test;
+namespace SandMix.Nodes.Debug;
 
-[Display( Name = "Test", GroupName = "Test" )]
-public class TestNode : BaseEffectImplementation
+[Display( Name = "Test", GroupName = "Debug" )]
+public class DebugTestNode : BaseEffectImplementation
 {
 	public override void ProcessEffect( ref float[][] input, ref float[][] output )
 	{
