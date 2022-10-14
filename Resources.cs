@@ -1,6 +1,8 @@
 ﻿using System;
 using Sandbox;
+#if SMIXTOOL
 using Tools;
+#endif
 using SandMix.Nodes;
 
 namespace SandMix;
