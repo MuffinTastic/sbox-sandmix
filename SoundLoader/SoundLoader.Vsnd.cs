@@ -151,7 +151,7 @@ public static partial class SoundLoader
 
 
 		Vsnd.AudioFileType fileType;
-		var waveFormat = Wav.AudioFormat.Unknown;
+		//var waveFormat = Wav.AudioFormat.Unknown;
 
 		switch ( soundFormat )
 		{
@@ -159,14 +159,14 @@ public static partial class SoundLoader
 				fileType = Vsnd.AudioFileType.WAV;
 				soundData.BitsPerSample = 8;
 				soundData.SampleSize = 1;
-				waveFormat = Wav.AudioFormat.PCM;
+				//waveFormat = Wav.AudioFormat.PCM;
 				break;
 
 			case Vsnd.AudioFormatV4.PCM16:
 				fileType = Vsnd.AudioFileType.WAV;
 				soundData.BitsPerSample = 16;
 				soundData.SampleSize = 2;
-				waveFormat = Wav.AudioFormat.PCM;
+				//waveFormat = Wav.AudioFormat.PCM;
 				break;
 
 			case Vsnd.AudioFormatV4.MP3:

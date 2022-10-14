@@ -369,7 +369,7 @@ namespace NWaves.Utils
 			return left.m_real != right.m_real || left.m_imaginary != right.m_imaginary;
 		}
 
-		public override bool Equals( [NotNullWhen( true )] object? obj )
+		public override bool Equals( [NotNullWhen( true )] object obj )
 		{
 			if ( !(obj is Complex) ) return false;
 			return Equals( (Complex)obj );
@@ -391,11 +391,11 @@ namespace NWaves.Utils
 
 		public override string ToString() => $"({m_real}, {m_imaginary})";
 
-		public string ToString( string? format ) => ToString( format, null );
+		public string ToString( string format ) => ToString( format, null );
 
-		public string ToString( IFormatProvider? provider ) => ToString( null, provider );
+		public string ToString( IFormatProvider provider ) => ToString( null, provider );
 
-		public string ToString( string? format, IFormatProvider? provider )
+		public string ToString( string format, IFormatProvider provider )
 		{
 			return string.Format( provider, "({0}, {1})", m_real.ToString( format, provider ), m_imaginary.ToString( format, provider ) );
 		}

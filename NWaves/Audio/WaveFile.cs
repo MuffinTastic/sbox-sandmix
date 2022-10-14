@@ -131,7 +131,7 @@ namespace NWaves.Audio
                     var fmtChannelSpeakerMap = reader.ReadInt32(); // Bitmask/flags indicating which channels are included in the file.
                     var fmtSubFormatCode = reader.ReadInt16(); // Similar to container-level format code (1 = PCM, 3 = IEEE, etc.).
                     var fmtSubFormatRemainder = reader.ReadBytes(14); // Remainder of SubFormat GUID.  Usually just "\x00\x00\x00\x00\x10\x00\x80\x00\x00\xAA\x00\x38\x9B\x71".
-                    if (waveFmt.AudioFormat == 0xFFFE)
+                    if ((ushort) waveFmt.AudioFormat == 0xFFFE)
                     {
                         waveFmt.AudioFormat = fmtSubFormatCode;
                     }
