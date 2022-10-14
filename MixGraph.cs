@@ -222,7 +222,9 @@ public class MixGraph
 
 						// Are inputs ready but we haven't processed data yet? Do it!
 						if ( outputNode.IsReady && !outputNode.DoneProcessing )
+						{
 							outputNode.ProcessMix();
+						}
 
 						// Is there data ready that we haven't copied yet? Do it!
 						if ( outputNode.DoneProcessing && !inputNode.GetReady( connection.InputCRC ) )
