@@ -14,10 +14,12 @@ public class TrackNode : BaseMixNode
 	[ResourceType( "vsnd" )]
 	public string Track { get; set; }
 
+	// --- //
+
 	[Browsable( false ), Output, JsonIgnore]
 	public float[][] Output { get; set; }
 
-	// ----- //
+	// --- //
 
 	private SoundData SoundData = null;
 	private float[][] SoundSamples = null;

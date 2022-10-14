@@ -15,14 +15,16 @@ namespace SandMix.Nodes.Mix.Audio;
 [Display( Name = "Effect", Description = "Apply an effect to the audio stream", GroupName = "Audio" )]
 public class MixEffectNode : BaseMixNode
 {
+	[ResourceType( EffectResource.FileExtension )]
+	public string Effect { get; set; }
+
+	// --- //
+
 	[Browsable( false ), Input, JsonIgnore]
 	public float[][] Input { get; set; }
 
 	[Browsable( false ), Output, JsonIgnore]
 	public float[][] Output { get; set; }
-
-	[ResourceType( EffectResource.FileExtension )]
-	public string Effect { get; set; }
 
 	// --- //
 

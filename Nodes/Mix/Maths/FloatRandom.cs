@@ -12,6 +12,8 @@ public class FloatRandom : BaseMixNode
 	public float Min { get; set; } = 0.0f;
 	public float Max { get; set; } = 1.0f;
 
+	// --- //
+
 	[Browsable( false ), Output, JsonIgnore]
 	public float Output { get; set; }
 
