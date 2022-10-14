@@ -14,6 +14,8 @@ public class EchoEffectNode : BaseEffectImplementation
 	[Sandbox.Range( min: 0.0f, max: 1.0f )]
 	public float Feedback { get; set; } = 0.5f;
 
+	// --- //
+
 	private EchoEffect[] Processors;
 
 	public override Task Load()

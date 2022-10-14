@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-
 [Display( Name = "Effect", Description = "Apply an effect to the audio stream", GroupName = "Audio" )]
 public class MixEffectNode : BaseMixNode
 {
