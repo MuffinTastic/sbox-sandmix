@@ -16,6 +16,8 @@ public enum GraphType : int
 public class GraphContainer
 {
 	public GraphType GraphType { get; set; }
+	public Vector2 EditorCenter { get; set; } = Vector2.Zero;
+	public float EditorScale { get; set; } = 1.0f;
 
 	[Browsable( true )]
 	public List<BaseNode> Nodes { get; set; } = new();
