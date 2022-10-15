@@ -13,6 +13,7 @@ public class DebugTestNode : BaseMixNode
 	public string Track { get; set; }
 	[ResourceType( EffectResource.FileExtension )]
 	public string Effect { get; set; }
+	[Display( Description = "Tooltip?" )]
 	public float RangedThingy { get; set; }
 
 	// --- //
