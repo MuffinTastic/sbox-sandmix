@@ -1,21 +1,31 @@
-﻿using SandMix.Nodes.Mix;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Sandbox;
-using SandMix.Nodes.Effects;
+using SandMix.Nodes.Mix;
 
 namespace SandMix.Nodes.Debug;
 
 [Display( Name = "Test", GroupName = "Debug" )]
-public class DebugTestNode : BaseEffectImplementation
+public class DebugTestNode : BaseMixNode
 {
-	public override void ProcessEffect( ref float[][] input, ref float[][] output )
+	[ResourceType( "vsnd" )]
+	public string Track { get; set; }
+	[ResourceType( EffectResource.FileExtension )]
+	public string Effect { get; set; }
+	public float RangedThingy { get; set; }
+
+	// --- //
+
+	[Browsable( false ), Input, JsonIgnore]
+	public float Output { get; set; }
+
+	// --- //
+
+	public override void ProcessMix()
 	{
-		for ( int i = 0; i < SandMix.Channels; i++ )
-		{
-			for ( int j = 0; j < SandMix.SampleSize; j++ )
-			{
-				output[i][j] = input[i][j] + 1;
-			}
-		}
+
+
+		SetDoneProcessing();
 	}
 }
