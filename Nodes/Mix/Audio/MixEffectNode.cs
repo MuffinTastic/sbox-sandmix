@@ -38,7 +38,7 @@ public class MixEffectNode : BaseMixNode
 	{
 		NodeThrowIf( string.IsNullOrEmpty( Effect ), "Effect missing" );
 
-		Resource = ResourceLibrary.Get<EffectResource>( Effect );
+		Resource = ResourceLibrary.Get<EffectGraphResource>( Effect );
 		NodeThrowIf( Resource is null, $"Couldn't load effect {Effect}" );
 
 		Output = SandMixUtil.CreateBuffers();
