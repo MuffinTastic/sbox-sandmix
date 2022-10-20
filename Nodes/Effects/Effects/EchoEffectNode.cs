@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Effects.Effects;
 
-[Display( Name = "Echo", Description = "Apply an echo effect to the audio stream", GroupName = "Effects" )]
+[Display( Name = "Echo", Description = "Apply an echo effect to the audio stream", GroupName = "#smix.node.category.effects" )]
 public class EchoEffectNode : BaseEffectImplementation
 {
 	[Sandbox.Range( min: 0.0f, max: 5.0f )]

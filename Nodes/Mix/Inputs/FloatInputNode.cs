@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Inputs;
 
-[Display( Name = "Float Input", Description = "Variable float input, supplied by game code", GroupName = "Inputs" )]
+[Display( Name = "Float Input", Description = "Variable float input, supplied by game code", GroupName = "#smix.node.category.inputs" )]
 public class FloatInputNode : BaseMixNode
 {
 	[Output]

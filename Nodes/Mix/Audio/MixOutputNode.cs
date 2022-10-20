@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-[Display( Name = "Mix Output", Description = "Plays the output of the mix as a single ingame sound stream", GroupName = "Audio" )]
+[Display( Name = "Mix Output", Description = "Plays the output of the mix as a single ingame sound stream", GroupName = "#smix.node.category.audio" )]
 public class MixOutputNode : BaseMixNode
 {
-	[Browsable( false ), Input, JsonIgnore]
+	[Browsable( false ), Input, JsonIgnore, Display( Name = "#smix.node.output" )]
 	public float[][] Output { get; set; }
 
 	// ----- //

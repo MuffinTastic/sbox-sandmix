@@ -8,7 +8,7 @@ using Sandbox;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-[Display( Name = "Track", Description = "Audio track - Sources from a .vsnd file", GroupName = "Audio" )]
+[Display( Name = "Track", Description = "Audio track - Sources from a .vsnd file", GroupName = "#smix.node.category.audio" )]
 public class TrackNode : BaseMixNode
 {
 	[ResourceType( "vsnd" )]

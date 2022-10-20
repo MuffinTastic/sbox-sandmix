@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Debug;
 
-[Display( Name = "Debug Audio Passthrough", GroupName = "Debug" )]
+[Display( Name = "Debug Audio Passthrough", GroupName = "#smix.node.category.debug" )]
 public class DebugAudioPassthrough : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]

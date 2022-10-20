@@ -6,7 +6,7 @@ using SandMix.Nodes.Mix;
 
 namespace SandMix.Nodes.Debug;
 
-[Display( Name = "Debug Float Output", Description = "Output", GroupName = "Debug" )]
+[Display( Name = "Debug Float Output", Description = "Output", GroupName = "#smix.node.category.debug" )]
 class DebugFloatOutput : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SandMix.Nodes.Effects.IO;
 
-[Display( Name = "Effect Output", Description = "Output to the effect graph", GroupName = "I/O" )]
+[Display( Name = "Effect Output", Description = "Output to the effect graph", GroupName = "#smix.node.category.io" )]
 public class EffectOutput : BaseEffectNode
 {
 	[Browsable( false ), Input, JsonIgnore]

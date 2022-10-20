@@ -12,18 +12,18 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-[Display( Name = "Effect", Description = "Apply an effect to the audio stream", GroupName = "Audio" )]
+[Display( Name = "#smix.node.mixeffectnode", Description = "Apply an effect to the audio stream", GroupName = "#smix.node.category.audio" )]
 public class MixEffectNode : BaseMixNode
 {
-	[ResourceType( EffectGraphResource.FileExtension )]
+	[ResourceType( EffectGraphResource.FileExtension ), Display( Name = "#smix.node.mixeffectnode.effect" )]
 	public string Effect { get; set; }
 
 	// --- //
 
-	[Browsable( false ), Input, JsonIgnore]
+	[Browsable( false ), Input, JsonIgnore, Display( Name = "#smix.node.input" )]
 	public float[][] Input { get; set; }
 
-	[Browsable( false ), Output, JsonIgnore]
+	[Browsable( false ), Output, JsonIgnore, Display( Name = "#smix.node.output" )]
 	public float[][] Output { get; set; }
 
 	// --- //

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -17,7 +18,10 @@ public abstract class BaseNode
 	[Browsable( false ), JsonIgnore]
 	public GraphContainer Graph { get; set; }
 
+	[Display( Name = "#smix.node.name" )]
 	public string Name { get; set; }
+
+	[Display( Name = "#smix.node.comment" )]
 	public string Comment { get; set; }
 
 	// ----- //

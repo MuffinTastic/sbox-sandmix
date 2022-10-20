@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-[Display( Name = "Dynamics", Description = "Apply dynamics to the audio stream (compression/limiting/expansion/noise gate)", GroupName = "Audio" )]
+[Display( Name = "Dynamics", Description = "Apply dynamics to the audio stream (compression/limiting/expansion/noise gate)", GroupName = "#smix.node.category.audio" )]
 public class DynamicsNode : BaseMixNode
 {
 	public DynamicsMode Mode { get; set; } = DynamicsMode.Compressor;

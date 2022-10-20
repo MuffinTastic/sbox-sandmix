@@ -6,7 +6,7 @@ using SandMix.Nodes.Mix;
 
 namespace SandMix.Nodes.Debug;
 
-[Display( Name = "Test", GroupName = "Debug" )]
+[Display( Name = "Test", GroupName = "#smix.node.category.debug" )]
 public class DebugTestNode : BaseMixNode
 {
 	[ResourceType( "vsnd" )]
