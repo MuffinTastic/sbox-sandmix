@@ -28,7 +28,7 @@ public class MixEffectNode : BaseMixNode
 
 	// --- //
 
-	private EffectResource Resource;
+	private EffectGraphResource Resource;
 	private List<BaseEffectImplementation> EffectNodes;
 
 	private float[][][] Buffers;
