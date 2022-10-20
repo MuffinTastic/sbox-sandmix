@@ -11,7 +11,7 @@ public class DebugTestNode : BaseMixNode
 {
 	[ResourceType( "vsnd" )]
 	public string Track { get; set; }
-	[ResourceType( EffectResource.FileExtension )]
+	[ResourceType( EffectGraphResource.FileExtension )]
 	public string Effect { get; set; }
 	[Display( Description = "Tooltip?" )]
 	public float RangedThingy { get; set; }

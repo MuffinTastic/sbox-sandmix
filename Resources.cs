@@ -31,14 +31,14 @@ public abstract class SandMixResource : GameResource
 		var graphType = asset.AssetType.FileExtension switch
 		{
 			MixGraphResource.FileExtension => GraphType.Mix,
-			EffectResource.FileExtension => GraphType.Effect,
+			EffectGraphResource.FileExtension => GraphType.Effect,
 			_ => throw new Exception( "Unknown graph type" )
 		};
 
 		SandMixResource resource = graphType switch
 		{
 			GraphType.Mix => asset.LoadResource<MixGraphResource>(),
-			GraphType.Effect => asset.LoadResource<EffectResource>(),
+			GraphType.Effect => asset.LoadResource<EffectGraphResource>(),
 			_ => throw new Exception( "Unknown graph type" )
 		};
 
@@ -56,7 +56,7 @@ public partial class MixGraphResource : SandMixResource
 
 
 [GameResource( $"{SandMix.ProjectName} effect", FileExtension, $"Effect preset for {SandMix.ProjectName}", Icon = Icon )]
-public partial class EffectResource : SandMixResource
+public partial class EffectGraphResource : SandMixResource
 {
 	public const string Icon = "leak_add";
 	public const string FileExtension = "smixefct";
