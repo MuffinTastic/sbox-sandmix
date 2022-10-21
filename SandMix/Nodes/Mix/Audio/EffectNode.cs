@@ -28,12 +28,12 @@ public class EffectNode : BaseMixGraphNode
 
 	// --- //
 
+#if !SMIXTOOL
 	private EffectGraphResource Resource;
 	private List<BaseEffectImplementation> EffectNodes;
 
 	private float[][][] Buffers;
 
-#if !SMIXTOOL
 	public override Task Load()
 	{
 		NodeThrowIf( string.IsNullOrEmpty( Effect ), "Effect missing" );
