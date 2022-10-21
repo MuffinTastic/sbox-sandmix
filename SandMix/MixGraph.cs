@@ -20,7 +20,7 @@ public class MixGraph
 	private List<LoadedConnection> LoadedConnections = new();
 
 	private Dictionary<string, FloatInputNode> InputNodes = new();
-	private MixOutputNode OutputNode;
+	private AudioOutputNode OutputNode;
 
 	private struct LoadedConnection
 	{
@@ -180,7 +180,7 @@ public class MixGraph
 			}
 		}
 
-		var outputNodes = Graph.Nodes.OfType<MixOutputNode>();
+		var outputNodes = Graph.Nodes.OfType<AudioOutputNode>();
 		var count = outputNodes.Count();
 
 		if ( count == 0 )
