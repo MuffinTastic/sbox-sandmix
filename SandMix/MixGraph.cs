@@ -204,7 +204,7 @@ public class MixGraph
 				// Reset nodes for current update
 				foreach ( var node in Graph.Nodes )
 				{
-					var mixNode = (BaseMixNode)node;
+					var mixNode = (BaseMixGraphNode)node;
 					mixNode.Reset();
 				}
 
