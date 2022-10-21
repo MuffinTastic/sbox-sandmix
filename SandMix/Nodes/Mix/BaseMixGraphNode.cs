@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix;
 
-public abstract class BaseMixNode : BaseNode
+public abstract class BaseMixGraphNode : BaseNode
 {
 	public static uint GetInputId( PropertyDescription input ) => Crc32.FromString( input.Name );
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace SandMix.Nodes.Mix.Audio;
 
 [Display( Name = "#smix.node.mixeffectnode", Description = "#smix.node.mixeffectnode.description", GroupName = "#smix.node.category.audio" )]
-public class MixEffectNode : BaseMixNode
+public class MixEffectNode : BaseMixGraphNode
 {
 	[ResourceType( EffectGraphResource.FileExtension ), Display( Name = "#smix.node.mixeffectnode.effect" )]
 	public string Effect { get; set; }

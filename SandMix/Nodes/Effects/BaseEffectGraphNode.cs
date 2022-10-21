@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SandMix.Nodes.Effects;
 
 
-public abstract class BaseEffectNode : BaseNode
+public abstract class BaseEffectGraphNode : BaseNode
 {
 	// dummy
 }

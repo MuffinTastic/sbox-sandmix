@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SandMix.Nodes.Mix.Audio;
 
 [Display( Name = "#smix.node.mixoutput", Description = "#smix.node.mixoutput.description", GroupName = "#smix.node.category.audio" )]
-public class MixOutputNode : BaseMixNode
+public class MixOutputNode : BaseMixGraphNode
 {
 	[Browsable( false ), Input, JsonIgnore, Display( Name = "#smix.node.output" )]
 	public float[][] Output { get; set; }

@@ -26,10 +26,10 @@ public class MixGraph
 	{
 
 
-		public BaseMixNode OutputNode;
+		public BaseMixGraphNode OutputNode;
 		public PropertyDescription OutputProperty;
 
-		public BaseMixNode InputNode;
+		public BaseMixGraphNode InputNode;
 		public PropertyDescription InputProperty;
 		public uint InputCRC;
 	}
@@ -148,8 +148,8 @@ public class MixGraph
 			var split1 = connection.Item1.Split( '.', 2 );
 			var split2 = connection.Item2.Split( '.', 2 );
 
-			var outputNode = (BaseMixNode) Graph.Find( split1[0] );
-			var inputNode = (BaseMixNode) Graph.Find( split2[0] );
+			var outputNode = (BaseMixGraphNode) Graph.Find( split1[0] );
+			var inputNode = (BaseMixGraphNode) Graph.Find( split2[0] );
 
 			var output = split1[1];
 			var input = split2[1];
@@ -166,7 +166,7 @@ public class MixGraph
 
 				InputNode = inputNode,
 				InputProperty = inputProperty,
-				InputCRC = BaseMixNode.GetInputId( inputProperty )
+				InputCRC = BaseMixGraphNode.GetInputId( inputProperty )
 			};
 
 			LoadedConnections.Add( loadedConnection );

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SandMix.Nodes.Mix.Maths;
 
 [Display( Name = "#smix.node.floatrandom", Description = "#smix.node.floatrandom.description", GroupName = "#smix.node.category.maths" )]
-public class FloatRandom : BaseMixNode
+public class FloatRandom : BaseMixGraphNode
 {
 	[Display( Name = "#smix.node.floatrandom.min" )]
 	public float Min { get; set; } = 0.0f;

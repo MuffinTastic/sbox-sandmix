@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SandMix.Nodes.Debug;
 
 [Display( Name = "Debug Audio Passthrough", GroupName = "#smix.node.category.debug" )]
-public class DebugAudioPassthrough : BaseMixNode
+public class DebugAudioPassthrough : BaseMixGraphNode
 {
 	[Browsable( false ), Input, JsonIgnore]
 	public float[][] AudioInput { get; set; }

@@ -9,7 +9,7 @@ using Sandbox;
 namespace SandMix.Nodes.Mix.Audio;
 
 [Display( Name = "#smix.node.tracknode", Description = "#smix.node.tracknode.description", GroupName = "#smix.node.category.audio" )]
-public class TrackNode : BaseMixNode
+public class TrackNode : BaseMixGraphNode
 {
 	[ResourceType( "vsnd" ), Display( Name = "#smix.node.tracknode.track" )]
 	public string Track { get; set; }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Effects;
 
-public abstract class BaseEffectImplementation : BaseEffectNode
+public abstract class BaseEffectImplementation : BaseEffectGraphNode
 {
 	[Browsable( false ), Input, JsonIgnore, Display( Name = "#smix.node.input" )]
 	public float[][] Input { get; set; }

@@ -7,7 +7,7 @@ using SandMix.Nodes.Mix;
 namespace SandMix.Nodes.Debug;
 
 [Display( Name = "Test", GroupName = "#smix.node.category.debug" )]
-public class DebugTestNode : BaseMixNode
+public class DebugTestNode : BaseMixGraphNode
 {
 	[ResourceType( "vsnd" )]
 	public string Track { get; set; }

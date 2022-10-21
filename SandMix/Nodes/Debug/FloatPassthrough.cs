@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace SandMix.Nodes.Debug;
 
 [Display( Name = "Debug Float Passthrough", Description = "Just passing through", GroupName = "#smix.node.category.debug" )]
-class DebugFloatPassthrough : BaseMixNode
+class DebugFloatPassthrough : BaseMixGraphNode
 {
 	[Browsable( false ), Input, JsonIgnore]
 	public float Input { get; set; }

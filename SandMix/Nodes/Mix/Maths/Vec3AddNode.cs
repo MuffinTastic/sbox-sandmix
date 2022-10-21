@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace SandMix.Nodes.Mix.Maths;
 
 [Icon( "add" ), Display( Name = "#smix.node.vec3add", Description = "#smix.node.vec3add.description", GroupName = "#smix.node.category.maths" )]
-public class Vec3AddNode : BaseMixNode
+public class Vec3AddNode : BaseMixGraphNode
 {
 	[Browsable( false ), Input, JsonIgnore]
 	public Vector3 X { get; set; }

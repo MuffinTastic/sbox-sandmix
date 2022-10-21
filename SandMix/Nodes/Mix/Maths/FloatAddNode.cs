@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace SandMix.Nodes.Mix.Maths;
 
 [Icon( "add" ), Display( Name = "#smix.node.floatadd", Description = "#smix.node.floatadd.description", GroupName = "#smix.node.category.maths" )]
-public class FloatAddNode : BaseMixNode
+public class FloatAddNode : BaseMixGraphNode
 {
 	[Browsable( false ), Input, JsonIgnore]
 	public float X { get; set; } = 0;

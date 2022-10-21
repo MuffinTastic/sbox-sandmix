@@ -7,7 +7,7 @@ using SandMix.Nodes.Mix;
 namespace SandMix.Nodes.Debug;
 
 [Display( Name = "Debug Float Output", Description = "Output", GroupName = "#smix.node.category.debug" )]
-class DebugFloatOutput : BaseMixNode
+class DebugFloatOutput : BaseMixGraphNode
 {
 	[Browsable( false ), Input, JsonIgnore]
 	public float Output { get; set; }

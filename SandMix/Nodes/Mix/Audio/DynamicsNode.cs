@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SandMix.Nodes.Mix.Audio;
 
 [Display( Name = "#smix.node.dynamics", Description = "#smix.node.dynamics.description", GroupName = "#smix.node.category.audio" )]
-public class DynamicsNode : BaseMixNode
+public class DynamicsNode : BaseMixGraphNode
 {
 	[Display( Name = "#smix.node.dynamics.mode" )]
 	public DynamicsMode Mode { get; set; } = DynamicsMode.Compressor;
