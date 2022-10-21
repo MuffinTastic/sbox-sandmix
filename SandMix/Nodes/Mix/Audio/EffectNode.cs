@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-[Display( Name = "#smix.node.mixeffectnode", Description = "#smix.node.mixeffectnode.description", GroupName = "#smix.node.category.audio" )]
-public class MixEffectNode : BaseMixGraphNode
+[Display( Name = "#smix.node.effectnode", Description = "#smix.node.effectnode.description", GroupName = "#smix.node.category.audio" )]
+public class EffectNode : BaseMixGraphNode
 {
-	[ResourceType( EffectGraphResource.FileExtension ), Display( Name = "#smix.node.mixeffectnode.effect" )]
+	[ResourceType( EffectGraphResource.FileExtension ), Display( Name = "#smix.node.effectnode.effect" )]
 	public string Effect { get; set; }
 
 	// --- //
