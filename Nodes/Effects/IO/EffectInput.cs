@@ -7,6 +7,6 @@ namespace SandMix.Nodes.Effects.IO;
 [Display( Name = "Effect Input", Description = "Input to the effect graph", GroupName = "#smix.node.category.io" )]
 public class EffectInput : BaseEffectNode
 {
-	[Browsable( false ), Output, JsonIgnore]
+	[Browsable( false ), Output, JsonIgnore, Display( Name = "#smix.node.input" )]
 	public float[][] Input { get; set; }
 }

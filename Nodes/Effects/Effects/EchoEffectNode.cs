@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Effects.Effects;
 
-[Display( Name = "Echo", Description = "Apply an echo effect to the audio stream", GroupName = "#smix.node.category.effects" )]
+[Display( Name = "#smix.node.echoeffect", Description = "#smix.node.echoeffect.description", GroupName = "#smix.node.category.effects" )]
 public class EchoEffectNode : BaseEffectImplementation
 {
-	[Sandbox.Range( min: 0.0f, max: 5.0f )]
+	[Sandbox.Range( min: 0.0f, max: 5.0f ), Display( Name = "#smix.node.echoeffect.delay" )]
 	public float Delay { get; set; } = 1.0f;
 
-	[Sandbox.Range( min: 0.0f, max: 1.0f )]
+	[Sandbox.Range( min: 0.0f, max: 1.0f ), Display( Name = "#smix.node.echoeffect.feedback" )]
 	public float Feedback { get; set; } = 0.5f;
 
 	// --- //

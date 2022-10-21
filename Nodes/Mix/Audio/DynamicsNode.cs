@@ -10,29 +10,36 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-[Display( Name = "Dynamics", Description = "Apply dynamics to the audio stream (compression/limiting/expansion/noise gate)", GroupName = "#smix.node.category.audio" )]
+[Display( Name = "#smix.node.dynamics", Description = "#smix.node.dynamics.description", GroupName = "#smix.node.category.audio" )]
 public class DynamicsNode : BaseMixNode
 {
+	[Display( Name = "#smix.node.dynamics.mode" )]
 	public DynamicsMode Mode { get; set; } = DynamicsMode.Compressor;
 
+	[Display( Name = "#smix.node.dynamics.threshold" )]
 	public float Threshold { get; set; }
-	
+
+	[Display( Name = "#smix.node.dynamics.ratio" )]
 	public float Ratio { get; set; }
 
+	[Display( Name = "#smix.node.dynamics.makeupgain" )]
 	public float MakeupGain { get; set; } = 0.0f;
 
+	[Display( Name = "#smix.node.dynamics.attack" )]
 	public float Attack { get; set; } = 0.01f;
 
+	[Display( Name = "#smix.node.dynamics.release" )]
 	public float Release { get; set; } = 0.1f;
 
+	[Display( Name = "#smix.node.dynamics.minamplitudedb" )]
 	public float MinAmplitudeDb { get; set; } = -120.0f;
 
 	// --- //
 
-	[Browsable( false ), Input, JsonIgnore]
+	[Browsable( false ), Input, JsonIgnore, Display( Name = "#smix.node.input" )]
 	public float[][] Input { get; set; }
 
-	[Browsable( false ), Output, JsonIgnore]
+	[Browsable( false ), Output, JsonIgnore, Display( Name = "#smix.node.output" )]
 	public float[][] Output { get; set; }
 
 	// --- //

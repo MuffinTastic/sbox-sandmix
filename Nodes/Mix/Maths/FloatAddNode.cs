@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace SandMix.Nodes.Mix.Maths;
 
-[Icon( "add" ), Display( Name = "Add Float", Description = "Add two floats together", GroupName = "#smix.node.category.maths" )]
+[Icon( "add" ), Display( Name = "#smix.node.floatadd", Description = "#smix.node.floatadd.description", GroupName = "#smix.node.category.maths" )]
 public class FloatAddNode : BaseMixNode
 {
 	[Browsable( false ), Input, JsonIgnore]
@@ -14,7 +14,7 @@ public class FloatAddNode : BaseMixNode
 	[Browsable( false ), Input, JsonIgnore]
 	public float Y { get; set; } = 0;
 
-	[Browsable( false ), Output, JsonIgnore]
+	[Browsable( false ), Output, JsonIgnore, Display( Name = "#smix.node.output" )]
 	public float Output { get; set; }
 
 	// --- //

@@ -3,10 +3,10 @@ using Sandbox;
 
 namespace SandMix.Nodes.Mix.Inputs;
 
-[Display( Name = "Float Constant", Description = "Constant float input", GroupName = "#smix.node.category.inputs" )]
+[Display( Name = "#smix.node.floatconstant", Description = "#smix.node.floatconstant.description", GroupName = "#smix.node.category.inputs" )]
 public class FloatConstantNode : BaseMixNode
 {
-	[Output]
+	[Output, Display( Name = "#smix.node.value" )]
 	public float Value { get; set; } = 0;
 
 	// --- //

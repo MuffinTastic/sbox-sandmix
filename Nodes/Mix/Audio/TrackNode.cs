@@ -8,15 +8,15 @@ using Sandbox;
 
 namespace SandMix.Nodes.Mix.Audio;
 
-[Display( Name = "Track", Description = "Audio track - Sources from a .vsnd file", GroupName = "#smix.node.category.audio" )]
+[Display( Name = "#smix.node.tracknode", Description = "#smix.node.tracknode.description", GroupName = "#smix.node.category.audio" )]
 public class TrackNode : BaseMixNode
 {
-	[ResourceType( "vsnd" )]
+	[ResourceType( "vsnd" ), Display( Name = "#smix.node.tracknode.track" )]
 	public string Track { get; set; }
 
 	// --- //
 
-	[Browsable( false ), Output, JsonIgnore]
+	[Browsable( false ), Output, JsonIgnore, Display( Name = "#smix.node.output" )]
 	public float[][] Output { get; set; }
 
 	// --- //

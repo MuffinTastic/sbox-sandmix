@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Maths;
 
-[Display( Name = "Random Float", Description = "Generate a random float number within a range", GroupName = "#smix.node.category.maths" )]
+[Display( Name = "#smix.node.floatrandom", Description = "#smix.node.floatrandom.description", GroupName = "#smix.node.category.maths" )]
 public class FloatRandom : BaseMixNode
 {
+	[Display( Name = "#smix.node.floatrandom.min" )]
 	public float Min { get; set; } = 0.0f;
+
+	[Display( Name = "#smix.node.floatrandom.max" )]
 	public float Max { get; set; } = 1.0f;
 
 	// --- //
 
-	[Browsable( false ), Output, JsonIgnore]
+	[Browsable( false ), Output, JsonIgnore, Display( Name = "#smix.node.output" )]
 	public float Output { get; set; }
 
 	// --- //

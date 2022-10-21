@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SandMix.Nodes.Mix.Inputs;
 
-[Display( Name = "Float Input", Description = "Variable float input, supplied by game code", GroupName = "#smix.node.category.inputs" )]
+[Display( Name = "#smix.node.floatinput", Description = "#smix.node.floatinput.description", GroupName = "#smix.node.category.inputs" )]
 public class FloatInputNode : BaseMixNode
 {
-	[Output]
+	[Output, Display( Name = "#smix.node.value" )]
 	public float Value { get; set; } = 0;
 
 	// --- //
