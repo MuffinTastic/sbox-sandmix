@@ -47,7 +47,7 @@ public abstract class SandMixResource : GameResource
 #endif
 }
 
-[GameResource( $"{SandMix.ProjectName} mixgraph", FileExtension, $"Mixgraph for live audio processing with {SandMix.ProjectName}", Icon = Icon )]
+[GameResource( $"{SandMix.ProjectName} mix graph", FileExtension, $"Mix graph for live audio processing with {SandMix.ProjectName}", Icon = Icon )]
 public partial class MixGraphResource : SandMixResource
 {
 	public const string Icon = "account_tree";
@@ -55,7 +55,7 @@ public partial class MixGraphResource : SandMixResource
 }
 
 
-[GameResource( $"{SandMix.ProjectName} effect", FileExtension, $"Effect preset for {SandMix.ProjectName}", Icon = Icon )]
+[GameResource( $"{SandMix.ProjectName} effect graph", FileExtension, $"Effect preset for {SandMix.ProjectName}", Icon = Icon )]
 public partial class EffectGraphResource : SandMixResource
 {
 	public const string Icon = "leak_add";
